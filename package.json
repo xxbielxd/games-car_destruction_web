@@ -1,0 +1,27 @@
+{
+  "name": "games-car_destruction_web",
+  "version": "0.1.0",
+  "description": "Arena-based car destruction game prototype built with Three.js and TypeScript.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "three": "^0.167.1",
+    "cannon-es": "^0.20.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0",
+    "vite": "^5.0.0",
+    "@types/three": "^0.167.1",
+    "@types/node": "^20.0.0",
+    "eslint": "^8.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "prettier": "^3.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0"
+  }
+}
