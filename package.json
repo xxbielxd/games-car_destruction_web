@@ -1,0 +1,16 @@
+{
+  "name": "games-car_destruction_web",
+  "version": "1.0.0",
+  "description": "Car destruction arena game in Three.js with TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "test": "node tests/Car.test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module"
+}
