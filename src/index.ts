@@ -1,11 +1,11 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Car from './Car.js';
 import Arena from './Arena.js';
 import Physics from './Physics.js';
 import Explosion from './Explosion.js';
 import Sound from './Sound.js';
+import { applyCarControls } from './Controls.js';
 
 // Cena principal
 const scene = new THREE.Scene();
@@ -24,12 +24,6 @@ const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(10, 10, 10);
 scene.add(light);
 scene.add(new THREE.AmbientLight(0xffffff, 0.4));
-
-// Controles de câmera
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.target.set(0, 0, 0);
-camera.position.set(0, 20, 30);
-controls.update();
 
 // Física
 const physics = new Physics();
@@ -73,6 +67,8 @@ function createCarEntity(id: string, color: number, position: any): CarEntity {
 const player = createCarEntity('player', 0x0000ff, new CANNON.Vec3(-5, 0.5, 0));
 const enemy = createCarEntity('enemy', 0xff0000, new CANNON.Vec3(5, 0.5, 0));
 
+const followOffset = new THREE.Vector3(0, 5, 10);
+
 // Explosões ativas
 const explosions: Explosion[] = [];
 
@@ -86,16 +82,6 @@ document.addEventListener('keydown', (e) => {
   }
 });
 document.addEventListener('keyup', (e) => (keys[e.key] = false));
-
-function handlePlayerControl() {
-  const force = 200;
-  if (keys['ArrowUp'])
-    player.body.applyForce(new CANNON.Vec3(0, 0, -force), player.body.position);
-  if (keys['ArrowDown'])
-    player.body.applyForce(new CANNON.Vec3(0, 0, force), player.body.position);
-  if (keys['ArrowLeft']) player.body.angularVelocity.y += 0.05;
-  if (keys['ArrowRight']) player.body.angularVelocity.y -= 0.05;
-}
 
 // IA simples: inimigo persegue o jogador
 function handleEnemyAI() {
@@ -143,6 +129,14 @@ function checkDestroyed(entity: CarEntity) {
   }
 }
 
+function updateCamera() {
+  const offset = followOffset
+    .clone()
+    .applyQuaternion(player.mesh.quaternion as any);
+  camera.position.copy(player.mesh.position.clone().add(offset));
+  camera.lookAt(player.mesh.position);
+}
+
 // Loop principal
 let lastTime = performance.now();
 function animate() {
@@ -151,7 +145,7 @@ function animate() {
   const delta = (now - lastTime) / 1000;
   lastTime = now;
 
-  handlePlayerControl();
+  applyCarControls(player.body, keys, CANNON.Vec3);
   handleEnemyAI();
 
   physics.step(delta);
@@ -166,6 +160,8 @@ function animate() {
     entity.mesh.position.copy(entity.body.position as any);
     entity.mesh.quaternion.copy(entity.body.quaternion as any);
   });
+
+  updateCamera();
 
   renderer.render(scene, camera);
 }

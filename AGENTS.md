@@ -35,3 +35,14 @@ Atualize sempre que implementar algo relevante.
 - Sons ao colidir e destruir carros utilizando elemento de áudio.
 - Testes garantem que os sons são disparados corretamente.
 - Próximos passos: adicionar música de fundo e controle de volume.
+
+## 2025-08-25 - Visão em primeira pessoa e novos controles
+
+- Câmera posicionada dentro do carro do jogador.
+- Controles alterados para WASD com espaço como freio de mão.
+- Testes cobrindo força aplicada e freio de mão.
+
+## 2025-08-26 - Visão em terceira pessoa e correções de movimento
+
+- Câmera segue o carro em terceira pessoa.
+- Controles WASD aplicam força relativa à orientação do carro.
