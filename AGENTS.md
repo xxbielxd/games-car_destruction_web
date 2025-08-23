@@ -41,3 +41,8 @@ Atualize sempre que implementar algo relevante.
 - Câmera posicionada dentro do carro do jogador.
 - Controles alterados para WASD com espaço como freio de mão.
 - Testes cobrindo força aplicada e freio de mão.
+
+## 2025-08-26 - Visão em terceira pessoa e correções de movimento
+
+- Câmera segue o carro em terceira pessoa.
+- Controles WASD aplicam força relativa à orientação do carro.

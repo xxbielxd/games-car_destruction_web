@@ -67,9 +67,7 @@ function createCarEntity(id: string, color: number, position: any): CarEntity {
 const player = createCarEntity('player', 0x0000ff, new CANNON.Vec3(-5, 0.5, 0));
 const enemy = createCarEntity('enemy', 0xff0000, new CANNON.Vec3(5, 0.5, 0));
 
-player.mesh.add(camera);
-camera.position.set(0, 0.5, 0);
-player.mesh.visible = false;
+const followOffset = new THREE.Vector3(0, 5, 10);
 
 // Explosões ativas
 const explosions: Explosion[] = [];
@@ -131,6 +129,14 @@ function checkDestroyed(entity: CarEntity) {
   }
 }
 
+function updateCamera() {
+  const offset = followOffset
+    .clone()
+    .applyQuaternion(player.mesh.quaternion as any);
+  camera.position.copy(player.mesh.position.clone().add(offset));
+  camera.lookAt(player.mesh.position);
+}
+
 // Loop principal
 let lastTime = performance.now();
 function animate() {
@@ -154,6 +160,8 @@ function animate() {
     entity.mesh.position.copy(entity.body.position as any);
     entity.mesh.quaternion.copy(entity.body.quaternion as any);
   });
+
+  updateCamera();
 
   renderer.render(scene, camera);
 }
