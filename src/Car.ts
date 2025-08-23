@@ -3,15 +3,19 @@
  * Responsável apenas pela lógica de vida do veículo.
  * A renderização e física são tratadas em outros módulos.
  */
+import type { Upgrade } from './Upgrade.js';
+
 export default class Car {
   id: string;
   maxHealth: number;
   health: number;
+  upgrades: Upgrade[];
 
   constructor(id: string, maxHealth = 100) {
     this.id = id;
     this.maxHealth = maxHealth;
     this.health = maxHealth;
+    this.upgrades = [];
   }
 
   /**
@@ -38,6 +42,18 @@ export default class Car {
    */
   heal(amount: number): number {
     this.health = Math.min(this.maxHealth, this.health + amount);
+    return this.health;
+  }
+
+  /**
+   * Aplica um upgrade ao carro aumentando sua vida máxima.
+   * @param upgrade Upgrade a ser aplicado.
+   * @returns Vida atual após o upgrade.
+   */
+  addUpgrade(upgrade: Upgrade): number {
+    this.upgrades.push(upgrade);
+    this.maxHealth += upgrade.bonusHealth;
+    this.health += upgrade.bonusHealth;
     return this.health;
   }
 }

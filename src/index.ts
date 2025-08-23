@@ -7,7 +7,12 @@ import Physics from './Physics.js';
 
 // Cena principal
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000,
+);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
@@ -51,7 +56,10 @@ function createCarEntity(id: string, color: number, position: any): CarEntity {
 
   // Barra de vida simples
   const barGeo = new THREE.PlaneGeometry(2, 0.2);
-  const barMat = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.DoubleSide });
+  const barMat = new THREE.MeshBasicMaterial({
+    color: 0x00ff00,
+    side: THREE.DoubleSide,
+  });
   const lifeBar = new THREE.Mesh(barGeo, barMat);
   lifeBar.position.set(0, 1, 0);
   mesh.add(lifeBar);
@@ -64,13 +72,21 @@ const enemy = createCarEntity('enemy', 0xff0000, new CANNON.Vec3(5, 0.5, 0));
 
 // Controle do jogador
 const keys: Record<string, boolean> = {};
-document.addEventListener('keydown', (e) => (keys[e.key] = true));
+document.addEventListener('keydown', (e) => {
+  keys[e.key] = true;
+  if (e.key === 'u') {
+    player.car.addUpgrade({ id: 'armor', bonusHealth: 20 });
+    updateLifeBars();
+  }
+});
 document.addEventListener('keyup', (e) => (keys[e.key] = false));
 
 function handlePlayerControl() {
   const force = 200;
-  if (keys['ArrowUp']) player.body.applyForce(new CANNON.Vec3(0, 0, -force), player.body.position);
-  if (keys['ArrowDown']) player.body.applyForce(new CANNON.Vec3(0, 0, force), player.body.position);
+  if (keys['ArrowUp'])
+    player.body.applyForce(new CANNON.Vec3(0, 0, -force), player.body.position);
+  if (keys['ArrowDown'])
+    player.body.applyForce(new CANNON.Vec3(0, 0, force), player.body.position);
   if (keys['ArrowLeft']) player.body.angularVelocity.y += 0.05;
   if (keys['ArrowRight']) player.body.angularVelocity.y -= 0.05;
 }
@@ -103,7 +119,9 @@ enemy.body.addEventListener('collide', (event: any) => {
 function updateLifeBars() {
   [player, enemy].forEach((entity) => {
     const ratio = entity.car.health / entity.car.maxHealth;
-    (entity.lifeBar.material as any).color.set(ratio > 0.3 ? 0x00ff00 : 0xff0000);
+    (entity.lifeBar.material as any).color.set(
+      ratio > 0.3 ? 0x00ff00 : 0xff0000,
+    );
     entity.lifeBar.scale.x = ratio;
     entity.lifeBar.position.x = -1 + ratio;
   });
