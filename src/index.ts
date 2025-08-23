@@ -5,6 +5,7 @@ import Car from './Car.js';
 import Arena from './Arena.js';
 import Physics from './Physics.js';
 import Explosion from './Explosion.js';
+import Sound from './Sound.js';
 
 // Cena principal
 const scene = new THREE.Scene();
@@ -33,6 +34,7 @@ controls.update();
 // Física
 const physics = new Physics();
 new Arena(scene, physics.world);
+const sound = new Sound();
 
 // Criação de carros
 interface CarEntity {
@@ -109,6 +111,7 @@ player.body.addEventListener('collide', (event: any) => {
     player.car.applyDamage(10);
     enemy.car.applyDamage(10);
     updateLifeBars();
+    sound.playCollision();
     checkDestroyed(player);
     checkDestroyed(enemy);
   }
@@ -134,6 +137,7 @@ function updateLifeBars() {
 function checkDestroyed(entity: CarEntity) {
   if (entity.car.isDestroyed()) {
     explosions.push(new Explosion(scene, entity.mesh.position.clone()));
+    sound.playDestruction();
     scene.remove(entity.mesh);
     physics.world.removeBody(entity.body);
   }

@@ -29,3 +29,9 @@ Atualize sempre que implementar algo relevante.
 - Adicionadas explosões simples ao destruir carros.
 - Testes cobrindo criação e remoção das explosões.
 - Próximos passos: adicionar efeitos sonoros ao colidir e destruir carros.
+
+## 2025-08-24 - Efeitos sonoros
+
+- Sons ao colidir e destruir carros utilizando elemento de áudio.
+- Testes garantem que os sons são disparados corretamente.
+- Próximos passos: adicionar música de fundo e controle de volume.

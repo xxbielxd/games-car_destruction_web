@@ -1,4 +1,4 @@
-import test, { mock } from 'node:test';
+import test from 'node:test';
 import assert from 'node:assert';
 
 class Vector3 {
@@ -49,13 +49,17 @@ class Mesh {
   }
 }
 
-mock.module('three', { Scene, Vector3, SphereGeometry, MeshBasicMaterial, Mesh });
+const ThreeMock = {
+  SphereGeometry,
+  MeshBasicMaterial,
+  Mesh,
+};
 
 test('Explosion adiciona mesh na cena', async () => {
   const { default: Explosion } = await import('../src/Explosion.js');
   const scene = new Scene();
   const pos = new Vector3(1, 2, 3);
-  const explosion = new Explosion(scene, pos);
+  const explosion = new Explosion(scene, pos, ThreeMock as any);
   assert.ok(scene.children.includes(explosion.mesh));
   assert.ok(explosion.mesh.position.equals(pos));
 });
@@ -63,7 +67,7 @@ test('Explosion adiciona mesh na cena', async () => {
 test('Explosion remove mesh após finalizar', async () => {
   const { default: Explosion } = await import('../src/Explosion.js');
   const scene = new Scene();
-  const explosion = new Explosion(scene, new Vector3());
+  const explosion = new Explosion(scene, new Vector3(), ThreeMock as any);
   let finished = false;
   let steps = 0;
   while (!finished && steps < 100) {
