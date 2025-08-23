@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Car from './Car.js';
 import Arena from './Arena.js';
 import Physics from './Physics.js';
+import Explosion from './Explosion.js';
 
 // Cena principal
 const scene = new THREE.Scene();
@@ -70,6 +71,9 @@ function createCarEntity(id: string, color: number, position: any): CarEntity {
 const player = createCarEntity('player', 0x0000ff, new CANNON.Vec3(-5, 0.5, 0));
 const enemy = createCarEntity('enemy', 0xff0000, new CANNON.Vec3(5, 0.5, 0));
 
+// Explosões ativas
+const explosions: Explosion[] = [];
+
 // Controle do jogador
 const keys: Record<string, boolean> = {};
 document.addEventListener('keydown', (e) => {
@@ -129,6 +133,7 @@ function updateLifeBars() {
 
 function checkDestroyed(entity: CarEntity) {
   if (entity.car.isDestroyed()) {
+    explosions.push(new Explosion(scene, entity.mesh.position.clone()));
     scene.remove(entity.mesh);
     physics.world.removeBody(entity.body);
   }
@@ -146,6 +151,11 @@ function animate() {
   handleEnemyAI();
 
   physics.step(delta);
+
+  // Atualiza explosões
+  for (let i = explosions.length - 1; i >= 0; i--) {
+    if (explosions[i].update(delta)) explosions.splice(i, 1);
+  }
 
   // Sincroniza malha com corpo físico
   [player, enemy].forEach((entity) => {

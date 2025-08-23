@@ -23,3 +23,9 @@ Atualize sempre que implementar algo relevante.
 - Atalho 'u' adiciona upgrade ao jogador.
 - Testes cobrindo aplicação de upgrades.
 - Próximos passos: expandir tipos de upgrades e efeitos visuais.
+
+## 2025-08-23 - Explosões visuais
+
+- Adicionadas explosões simples ao destruir carros.
+- Testes cobrindo criação e remoção das explosões.
+- Próximos passos: adicionar efeitos sonoros ao colidir e destruir carros.
