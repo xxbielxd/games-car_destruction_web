@@ -1,5 +1,3 @@
-import * as THREE from 'three';
-
 /**
  * Efeito visual simples de explosão.
  * Cria uma esfera que expande e desaparece.
@@ -7,14 +5,15 @@ import * as THREE from 'three';
 export default class Explosion {
   mesh: any;
 
-  constructor(scene: any, position: any) {
-    const geometry = new THREE.SphereGeometry(1, 8, 8);
-    const material = new THREE.MeshBasicMaterial({
+  constructor(scene: any, position: any, threeLib: any = (globalThis as any).THREE) {
+    if (!threeLib) throw new Error('Three.js não disponível');
+    const geometry = new threeLib.SphereGeometry(1, 8, 8);
+    const material = new threeLib.MeshBasicMaterial({
       color: 0xffa500,
       transparent: true,
       opacity: 1,
     });
-    this.mesh = new THREE.Mesh(geometry, material);
+    this.mesh = new threeLib.Mesh(geometry, material);
     this.mesh.position.copy(position);
     scene.add(this.mesh);
   }
