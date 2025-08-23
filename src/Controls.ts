@@ -3,7 +3,7 @@ export function applyCarControls(
   keys: Record<string, boolean>,
   Vec3: any,
 ): void {
-  const force = 1000;
+  const force = 8000;
   if (keys['w']) {
     const forward = new Vec3(0, 0, -force);
     body.quaternion.vmult(forward, forward);
