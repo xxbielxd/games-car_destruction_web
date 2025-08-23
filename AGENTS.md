@@ -46,3 +46,10 @@ Atualize sempre que implementar algo relevante.
 
 - Câmera segue o carro em terceira pessoa.
 - Controles WASD aplicam força relativa à orientação do carro.
+
+## 2025-08-27 - Ajustes de física e música de fundo
+
+- Gravidade intensificada e maior atrito para impedir que os carros decolem.
+- Carros remodelados com rodas e damping para curvas mais suaves.
+- Música de fundo dinâmica com aumento de intensidade conforme a vida do jogador.
+- Próximos passos: adicionar sistema de partículas de poeira ao derrapar.

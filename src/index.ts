@@ -29,6 +29,7 @@ scene.add(new THREE.AmbientLight(0xffffff, 0.4));
 const physics = new Physics();
 new Arena(scene, physics.world);
 const sound = new Sound();
+sound.playBackground();
 
 // Criação de carros
 interface CarEntity {
@@ -40,15 +41,51 @@ interface CarEntity {
 
 function createCarEntity(id: string, color: number, position: any): CarEntity {
   const car = new Car(id);
-  const geometry = new THREE.BoxGeometry(2, 1, 4);
-  const material = new THREE.MeshStandardMaterial({ color });
-  const mesh = new THREE.Mesh(geometry, material);
-  scene.add(mesh);
+
+  // Grupo que representa o carro com corpo e rodas
+  const group = new THREE.Group();
+  const bodyMaterial = new THREE.MeshStandardMaterial({
+    color,
+    metalness: 0.3,
+    roughness: 0.6,
+  });
+
+  // Corpo principal
+  const chassisGeo = new THREE.BoxGeometry(2, 0.5, 4);
+  const chassis = new THREE.Mesh(chassisGeo, bodyMaterial);
+  chassis.position.y = 0.5;
+  group.add(chassis);
+
+  // Cabine
+  const cabinGeo = new THREE.BoxGeometry(1.5, 0.5, 1.5);
+  const cabin = new THREE.Mesh(cabinGeo, bodyMaterial);
+  cabin.position.set(0, 0.75, -0.5);
+  group.add(cabin);
+
+  // Rodas
+  const wheelGeo = new THREE.CylinderGeometry(0.5, 0.5, 0.4, 16);
+  const wheelMat = new THREE.MeshStandardMaterial({ color: 0x333333 });
+  const wheelPositions = [
+    [-1, 0.25, -1.5],
+    [1, 0.25, -1.5],
+    [-1, 0.25, 1.5],
+    [1, 0.25, 1.5],
+  ];
+  wheelPositions.forEach((pos) => {
+    const wheel = new THREE.Mesh(wheelGeo, wheelMat);
+    wheel.rotation.z = Math.PI / 2;
+    wheel.position.set(pos[0], pos[1], pos[2]);
+    group.add(wheel);
+  });
+
+  scene.add(group);
 
   const shape = new CANNON.Box(new CANNON.Vec3(1, 0.5, 2));
-  const body = new CANNON.Body({ mass: 150 });
+  const body = new CANNON.Body({ mass: 200 });
   body.addShape(shape);
   body.position.copy(position);
+  body.linearDamping = 0.2;
+  body.angularDamping = 0.4;
   physics.world.addBody(body);
 
   // Barra de vida simples
@@ -58,10 +95,10 @@ function createCarEntity(id: string, color: number, position: any): CarEntity {
     side: THREE.DoubleSide,
   });
   const lifeBar = new THREE.Mesh(barGeo, barMat);
-  lifeBar.position.set(0, 1, 0);
-  mesh.add(lifeBar);
+  lifeBar.position.set(0, 1.2, 0);
+  group.add(lifeBar);
 
-  return { car, mesh, body, lifeBar };
+  return { car, mesh: group, body, lifeBar };
 }
 
 const player = createCarEntity('player', 0x0000ff, new CANNON.Vec3(-5, 0.5, 0));
@@ -118,6 +155,8 @@ function updateLifeBars() {
     entity.lifeBar.scale.x = ratio;
     entity.lifeBar.position.x = -1 + ratio;
   });
+  const playerRatio = player.car.health / player.car.maxHealth;
+  sound.setBackgroundIntensity(playerRatio < 0.3 ? 1.5 : 1);
 }
 
 function checkDestroyed(entity: CarEntity) {

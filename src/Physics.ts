@@ -7,7 +7,11 @@ export default class Physics {
   world: any;
 
   constructor() {
-    this.world = new CANNON.World({ gravity: new CANNON.Vec3(0, -9.82, 0) });
+    // Gravidade mais intensa para manter os carros firmes no chão
+    this.world = new CANNON.World({ gravity: new CANNON.Vec3(0, -30, 0) });
+    // Ajusta material padrão para maior atrito e colisões menos elásticas
+    this.world.defaultContactMaterial.friction = 0.6;
+    this.world.defaultContactMaterial.restitution = 0.3;
   }
 
   /**
