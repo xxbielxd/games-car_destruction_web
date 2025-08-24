@@ -68,3 +68,9 @@ Atualize sempre que implementar algo relevante.
 - Bots agora recebem força maior para se moverem.
 - Testes atualizados e novo teste para cálculo de câmera.
 - Próximos passos: ajustar derrapagem lateral do carro.
+
+## 2025-08-30 - Containerização com Docker
+
+- Adicionada imagem Docker multi-stage para build e preview do jogo.
+- Instruções de uso com Docker documentadas no README.
+- Próximos passos: configurar pipeline de CI para gerar a imagem automaticamente.
