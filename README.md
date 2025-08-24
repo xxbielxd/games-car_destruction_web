@@ -40,7 +40,7 @@ Protótipo de jogo web em Three.js onde o objetivo é destruir os outros carros 
 
 ## Roadmap
 - [x] Sistema de upgrades/modificações.
-- [ ] Múltiplos bots com IA melhorada.
+- [x] Múltiplos bots com IA melhorada.
 - [x] Explosões visuais ao destruir carros.
 - [ ] Backend com Socket.IO e Redis para multiplayer.
 - [ ] Persistência de upgrades em banco de dados.
@@ -48,6 +48,7 @@ Protótipo de jogo web em Three.js onde o objetivo é destruir os outros carros 
 - [x] Efeitos sonoros ao colidir e destruir carros.
 - [x] Música de fundo dinâmica durante a batalha.
 - [ ] Sistema de partículas de poeira ao derrapar.
+- [ ] Power-ups temporários espalhados pela arena.
 
 ## Licença
 Projeto criado para fins educativos.

@@ -46,6 +46,22 @@ test('applyCarControls aplica força para frente com W', () => {
   assert(applied.z < 0);
 });
 
+test('força de aceleração é suficientemente alta', () => {
+  let applied: any = null;
+  const body: any = {
+    applyForce: (force: any) => {
+      applied = force.clone ? force.clone() : { ...force };
+    },
+    position: new StubVec3(),
+    angularVelocity: new StubVec3(),
+    velocity: new StubVec3(),
+    quaternion: new IdentityQuat(),
+  };
+  applyCarControls(body, { w: true }, StubVec3);
+  assert(applied !== null);
+  assert(Math.abs(applied.z) >= 12000);
+});
+
 test('aplica freio de mão com espaço', () => {
   const body: any = {
     applyForce: () => {},

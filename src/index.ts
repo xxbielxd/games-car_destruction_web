@@ -6,6 +6,7 @@ import Physics from './Physics.js';
 import Explosion from './Explosion.js';
 import Sound from './Sound.js';
 import { applyCarControls } from './Controls.js';
+import { pursuePlayer } from './EnemyAI.js';
 
 // Cena principal
 const scene = new THREE.Scene();
@@ -102,7 +103,10 @@ function createCarEntity(id: string, color: number, position: any): CarEntity {
 }
 
 const player = createCarEntity('player', 0x0000ff, new CANNON.Vec3(-5, 0.5, 0));
-const enemy = createCarEntity('enemy', 0xff0000, new CANNON.Vec3(5, 0.5, 0));
+const enemies: CarEntity[] = [
+  createCarEntity('enemy1', 0xff0000, new CANNON.Vec3(5, 0.5, 0)),
+  createCarEntity('enemy2', 0x00ff00, new CANNON.Vec3(0, 0.5, 5)),
+];
 
 const followOffset = new THREE.Vector3(0, 5, 10);
 
@@ -122,15 +126,15 @@ document.addEventListener('keyup', (e) => (keys[e.key] = false));
 
 // IA simples: inimigo persegue o jogador
 function handleEnemyAI() {
-  const direction = player.body.position.vsub(enemy.body.position);
-  direction.normalize();
-  direction.scale(150, direction);
-  enemy.body.applyForce(direction, enemy.body.position);
+  enemies.forEach((enemy) =>
+    pursuePlayer(enemy.body, player.body.position),
+  );
 }
 
 // Colisões para aplicar dano
 player.body.addEventListener('collide', (event: any) => {
-  if (event.body === enemy.body) {
+  const enemy = enemies.find((e) => e.body === event.body);
+  if (enemy) {
     player.car.applyDamage(10);
     enemy.car.applyDamage(10);
     updateLifeBars();
@@ -140,14 +144,8 @@ player.body.addEventListener('collide', (event: any) => {
   }
 });
 
-enemy.body.addEventListener('collide', (event: any) => {
-  if (event.body === player.body) {
-    // já tratado no listener do player
-  }
-});
-
 function updateLifeBars() {
-  [player, enemy].forEach((entity) => {
+  [player, ...enemies].forEach((entity) => {
     const ratio = entity.car.health / entity.car.maxHealth;
     (entity.lifeBar.material as any).color.set(
       ratio > 0.3 ? 0x00ff00 : 0xff0000,
@@ -165,6 +163,8 @@ function checkDestroyed(entity: CarEntity) {
     sound.playDestruction();
     scene.remove(entity.mesh);
     physics.world.removeBody(entity.body);
+    const idx = enemies.indexOf(entity);
+    if (idx !== -1) enemies.splice(idx, 1);
   }
 }
 
@@ -195,7 +195,7 @@ function animate() {
   }
 
   // Sincroniza malha com corpo físico
-  [player, enemy].forEach((entity) => {
+  [player, ...enemies].forEach((entity) => {
     entity.mesh.position.copy(entity.body.position as any);
     entity.mesh.quaternion.copy(entity.body.quaternion as any);
   });
