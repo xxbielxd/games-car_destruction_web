@@ -11,12 +11,7 @@ import { computeCameraOffset } from './Camera.js';
 
 // Cena principal
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000,
-);
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
@@ -29,11 +24,11 @@ scene.add(new THREE.AmbientLight(0xffffff, 0.4));
 
 // Física
 const physics = new Physics();
-new Arena(scene, physics.world);
+new Arena(scene, physics.world, 120);
 const sound = new Sound();
 sound.playBackground();
 
-// Criação de carros
+// Tipagem
 interface CarEntity {
   car: Car;
   mesh: any;
@@ -44,7 +39,6 @@ interface CarEntity {
 function createCarEntity(id: string, color: number, position: any): CarEntity {
   const car = new Car(id);
 
-  // Grupo que representa o carro com corpo e rodas
   const group = new THREE.Group();
   const bodyMaterial = new THREE.MeshStandardMaterial({
     color,
@@ -69,9 +63,9 @@ function createCarEntity(id: string, color: number, position: any): CarEntity {
   const wheelMat = new THREE.MeshStandardMaterial({ color: 0x333333 });
   const wheelPositions = [
     [-1, 0.25, -1.5],
-    [1, 0.25, -1.5],
-    [-1, 0.25, 1.5],
-    [1, 0.25, 1.5],
+    [ 1, 0.25, -1.5],
+    [-1, 0.25,  1.5],
+    [ 1, 0.25,  1.5],
   ];
   wheelPositions.forEach((pos) => {
     const wheel = new THREE.Mesh(wheelGeo, wheelMat);
@@ -82,20 +76,22 @@ function createCarEntity(id: string, color: number, position: any): CarEntity {
 
   scene.add(group);
 
+  // Física do carro
   const shape = new CANNON.Box(new CANNON.Vec3(1, 0.5, 2));
   const body = new CANNON.Body({ mass: 200 });
   body.addShape(shape);
   body.position.copy(position);
-  body.linearDamping = 0.2;
-  body.angularDamping = 0.4;
+
+  // Damping / rotação (evita capote e vibrações)
+  body.angularFactor.set(0, 1, 0);   // gira só no Y
+  body.linearDamping = 0.20;         // arrasto linear
+  body.angularDamping = 0.55;        // arrasto angular
+
   physics.world.addBody(body);
 
-  // Barra de vida simples
+  // Barra de vida
   const barGeo = new THREE.PlaneGeometry(2, 0.2);
-  const barMat = new THREE.MeshBasicMaterial({
-    color: 0x00ff00,
-    side: THREE.DoubleSide,
-  });
+  const barMat = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.DoubleSide });
   const lifeBar = new THREE.Mesh(barGeo, barMat);
   lifeBar.position.set(0, 1.2, 0);
   group.add(lifeBar);
@@ -110,50 +106,43 @@ const enemies: CarEntity[] = [
 ];
 
 const followOffset = new THREE.Vector3(0, 5, 10);
-
-// Explosões ativas
 const explosions: Explosion[] = [];
 
-// Controle do jogador
+// ================== Input (normalizado) ==================
 const keys: Record<string, boolean> = {};
+const normalizeKey = (k: string) => k.toLowerCase();
+const mapArrow = (k: string) => {
+  switch (k) {
+    case 'arrowup':
+    case 'arrowdown':
+    case 'arrowleft':
+    case 'arrowright':
+      return k;
+    default:
+      return k;
+  }
+};
+
 document.addEventListener('keydown', (e) => {
-  keys[e.key] = true;
-  if (e.key === 'u') {
+  const k = mapArrow(normalizeKey(e.key));
+  keys[k] = true;
+  if (k === 'u') {
     player.car.addUpgrade({ id: 'armor', bonusHealth: 20 });
     updateLifeBars();
   }
 });
-document.addEventListener('keyup', (e) => (keys[e.key] = false));
+document.addEventListener('keyup', (e) => {
+  const k = mapArrow(normalizeKey(e.key));
+  keys[k] = false;
+});
+// =========================================================
 
-// Controle de câmera com botão direito do mouse
-let rightMouseDown = false;
-let cameraYaw = 0;
-let cameraPitch = 0;
-document.addEventListener('contextmenu', (e) => e.preventDefault());
-document.addEventListener('mousedown', (e) => {
-  if (e.button === 2) rightMouseDown = true;
-});
-document.addEventListener('mouseup', (e) => {
-  if (e.button === 2) rightMouseDown = false;
-});
-document.addEventListener('mousemove', (e) => {
-  if (rightMouseDown) {
-    cameraYaw -= e.movementX * 0.005;
-    cameraPitch -= e.movementY * 0.005;
-    const limit = Math.PI / 4;
-    if (cameraPitch > limit) cameraPitch = limit;
-    if (cameraPitch < -limit) cameraPitch = -limit;
-  }
-});
-
-// IA simples: inimigo persegue o jogador
+// IA: inimigo persegue o jogador
 function handleEnemyAI() {
-  enemies.forEach((enemy) =>
-    pursuePlayer(enemy.body, player.body.position),
-  );
+  enemies.forEach((enemy) => pursuePlayer(enemy.body, player.body.position));
 }
 
-// Colisões para aplicar dano
+// Colisão/dano
 player.body.addEventListener('collide', (event: any) => {
   const enemy = enemies.find((e) => e.body === event.body);
   if (enemy) {
@@ -169,9 +158,7 @@ player.body.addEventListener('collide', (event: any) => {
 function updateLifeBars() {
   [player, ...enemies].forEach((entity) => {
     const ratio = entity.car.health / entity.car.maxHealth;
-    (entity.lifeBar.material as any).color.set(
-      ratio > 0.3 ? 0x00ff00 : 0xff0000,
-    );
+    (entity.lifeBar.material as any).color.set(ratio > 0.3 ? 0x00ff00 : 0xff0000);
     entity.lifeBar.scale.x = ratio;
     entity.lifeBar.position.x = -1 + ratio;
   });
@@ -193,8 +180,8 @@ function checkDestroyed(entity: CarEntity) {
 function updateCamera() {
   const offset = computeCameraOffset(
     followOffset,
-    cameraYaw,
-    cameraPitch,
+    0, // yaw manual (botão dir) opcional
+    0, // pitch manual (botão dir) opcional
     player.mesh.quaternion as any,
   );
   const offsetVec = new THREE.Vector3(offset.x, offset.y, offset.z);
@@ -210,24 +197,24 @@ function animate() {
   const delta = (now - lastTime) / 1000;
   lastTime = now;
 
-  applyCarControls(player.body, keys, CANNON.Vec3);
+  // Passe o delta para controles (suavização consistente)
+  applyCarControls(player.body, keys, delta);
   handleEnemyAI();
 
   physics.step(delta);
 
-  // Atualiza explosões
+  // Explosões
   for (let i = explosions.length - 1; i >= 0; i--) {
     if (explosions[i].update(delta)) explosions.splice(i, 1);
   }
 
-  // Sincroniza malha com corpo físico
+  // Sincroniza mesh com corpo
   [player, ...enemies].forEach((entity) => {
     entity.mesh.position.copy(entity.body.position as any);
     entity.mesh.quaternion.copy(entity.body.quaternion as any);
   });
 
   updateCamera();
-
   renderer.render(scene, camera);
 }
 
