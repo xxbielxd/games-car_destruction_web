@@ -95,3 +95,11 @@ Atualize sempre que implementar algo relevante.
 - Explosões agora recebem instância do THREE corretamente.
 - Vida base dos carros aumentada para 200 com teste dedicado.
 - Controles ajustados para reduzir viradas involuntárias.
+
+## 2025-09-03 - Menu inicial e dano direcional
+
+- Tela de menu para iniciar e exibir Game Over.
+- Controles simplificados para resposta mais direta.
+- IA dos bots avança com força maior na direção do jogador.
+- Dano varia conforme a direção do impacto (frente menos, lateral mais).
+- Testes cobrindo estado do jogo e cálculo de dano.

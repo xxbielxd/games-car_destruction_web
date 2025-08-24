@@ -1,4 +1,4 @@
-import * as CANNON from 'cannon-es';
+import * as CANNON from './stubs/cannon-es.js';
 
 /**
  * Faz o bot perseguir o jogador com estabilidade:
@@ -14,10 +14,11 @@ export function pursuePlayer(
 ): void {
   enemyBody.wakeUp?.();
   // Direção até o player (só no plano XZ)
-  const toPlayer = targetPos.vsub(enemyBody.position);
-  toPlayer.y = 0;
-  if (toPlayer.lengthSquared() < 1e-6) return; // já está em cima
+  const toPlayerRaw = targetPos.vsub(enemyBody.position);
+  toPlayerRaw.y = 0;
+  if (toPlayerRaw.lengthSquared() < 1e-6) return; // já está em cima
 
+  const toPlayer = new CANNON.Vec3(toPlayerRaw.x, toPlayerRaw.y, toPlayerRaw.z);
   toPlayer.normalize();
 
   // Ângulo desejado no plano
@@ -39,17 +40,14 @@ export function pursuePlayer(
   enemyBody.torque.y += (rand() - 0.5) * 90;
 
   // Avança se estiver “apontado” de forma razoável
-  const facingFactor = Math.max(0, Math.cos(angleDiff));
-  const DRIVE = 4200 * facingFactor;
+  const DRIVE = 9000;
 
-  const forwardLocal = new CANNON.Vec3(0, 0, -1);
-  const forwardWorld = enemyBody.quaternion.vmult(forwardLocal, new CANNON.Vec3());
-  const forceVec = forwardWorld.scale(DRIVE, new CANNON.Vec3());
+  const forceVec = toPlayer.scale(DRIVE, new CANNON.Vec3());
   enemyBody.applyForce(forceVec, enemyBody.position);
 
   // Clamp de velocidade: mantém bots domáveis
   const MAX_SPEED = 24;
-  const v = enemyBody.velocity;
+  const v = enemyBody.velocity || new CANNON.Vec3();
   const speed = v.length();
   if (speed > MAX_SPEED) {
     v.scale(MAX_SPEED / (speed + 1e-6), v);
