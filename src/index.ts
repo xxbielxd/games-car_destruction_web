@@ -109,6 +109,25 @@ const enemies: CarEntity[] = [
 const followOffset = new THREE.Vector3(0, 5, 10);
 const explosions: Explosion[] = [];
 const dust = new Dust(THREE, scene);
+updateLifeBars();
+
+// Controle de câmera com botão direito
+let camYaw = 0;
+let camPitch = 0;
+let rotating = false;
+document.addEventListener('contextmenu', (e) => e.preventDefault());
+document.addEventListener('mousedown', (e) => {
+  if (e.button === 2) rotating = true;
+});
+document.addEventListener('mouseup', (e) => {
+  if (e.button === 2) rotating = false;
+});
+document.addEventListener('mousemove', (e) => {
+  if (!rotating) return;
+  camYaw -= e.movementX * 0.003;
+  camPitch -= e.movementY * 0.003;
+  camPitch = Math.max(-1, Math.min(1, camPitch));
+});
 
 // ================== Input (normalizado) ==================
 const keys: Record<string, boolean> = {};
@@ -170,7 +189,7 @@ function updateLifeBars() {
 
 function checkDestroyed(entity: CarEntity) {
   if (entity.car.isDestroyed()) {
-    explosions.push(new Explosion(scene, entity.mesh.position.clone()));
+    explosions.push(new Explosion(scene, entity.mesh.position.clone(), THREE));
     sound.playDestruction();
     scene.remove(entity.mesh);
     physics.world.removeBody(entity.body);
@@ -182,8 +201,8 @@ function checkDestroyed(entity: CarEntity) {
 function updateCamera() {
   const offset = computeCameraOffset(
     followOffset,
-    0, // yaw manual (botão dir) opcional
-    0, // pitch manual (botão dir) opcional
+    camYaw,
+    camPitch,
     player.mesh.quaternion as any,
   );
   const offsetVec = new THREE.Vector3(offset.x, offset.y, offset.z);
