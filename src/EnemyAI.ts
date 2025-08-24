@@ -12,6 +12,7 @@ export function pursuePlayer(
   targetPos: any,
   rand: () => number = Math.random,
 ): void {
+  enemyBody.wakeUp?.();
   // Direção até o player (só no plano XZ)
   const toPlayer = targetPos.vsub(enemyBody.position);
   toPlayer.y = 0;

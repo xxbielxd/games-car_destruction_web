@@ -87,3 +87,11 @@ Atualize sempre que implementar algo relevante.
 - Carros podem receber power-ups temporários de armadura.
 - Testes garantem que os efeitos expiram corretamente.
 - Próximos passos: implementar sistema de clima dinâmico e achievements para jogadores.
+
+## 2025-09-02 - Ajustes de controles e vida
+
+- Câmera reposicionável com botão direito do mouse restaurada.
+- Bots acordam ao perseguir jogador, evitando ficarem parados.
+- Explosões agora recebem instância do THREE corretamente.
+- Vida base dos carros aumentada para 200 com teste dedicado.
+- Controles ajustados para reduzir viradas involuntárias.

@@ -2,6 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert';
 import Car from '../src/Car.js';
 
+test('Car inicia com vida base aumentada', () => {
+  const car = new Car('test');
+  assert.equal(car.maxHealth, 200);
+  assert.equal(car.health, 200);
+});
+
 test('Car perde vida ao receber dano', () => {
   const car = new Car('test', 100);
   car.applyDamage(30);

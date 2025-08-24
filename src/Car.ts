@@ -13,7 +13,7 @@ export default class Car {
   upgrades: Upgrade[];
   powerUps: { data: PowerUp; remaining: number }[];
 
-  constructor(id: string, maxHealth = 100) {
+  constructor(id: string, maxHealth = 200) {
     this.id = id;
     this.maxHealth = maxHealth;
     this.health = maxHealth;

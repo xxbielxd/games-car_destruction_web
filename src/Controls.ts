@@ -60,7 +60,8 @@ export function applyCarControls(
   const brakePressed   = !!keys[' '];
 
   const rawThrottle = (forwardPressed ? 1 : 0) + (backPressed ? -1 : 0);
-  const rawSteer    = (rightPressed ? 1 : 0) - (leftPressed ? 1 : 0); // D=+1, A=-1
+  let rawSteer    = (rightPressed ? 1 : 0) - (leftPressed ? 1 : 0); // D=+1, A=-1
+  if (forwardPressed && !leftPressed && !rightPressed) rawSteer = 0;
 
   // Slew (moveToward)
   const moveToward = (a: number, b: number, maxDelta: number) =>
@@ -119,7 +120,7 @@ export function applyCarControls(
   const straightMode =
     forwardPressed && !backPressed &&
     steerAbs < 0.02 &&
-    slipAngle < 0.10 &&
+    slipAngle < 0.20 &&
     goingForward;
 
   if (straightMode) {
