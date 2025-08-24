@@ -3,8 +3,8 @@ export function applyCarControls(
   keys: Record<string, boolean>,
   Vec3: any,
 ): void {
-  // Força reduzida para evitar que o carro saia voando ao acelerar
-  const force = 6000;
+  // Força aumentada para permitir aceleração mais responsiva
+  const force = 12000;
   if (keys['w']) {
     const forward = new Vec3(0, 0, -force);
     body.quaternion.vmult(forward, forward);

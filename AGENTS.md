@@ -53,3 +53,10 @@ Atualize sempre que implementar algo relevante.
 - Carros remodelados com rodas e damping para curvas mais suaves.
 - Música de fundo dinâmica com aumento de intensidade conforme a vida do jogador.
 - Próximos passos: adicionar sistema de partículas de poeira ao derrapar.
+
+## 2025-08-28 - Múltiplos bots e IA aprimorada
+
+- Adicionadas rotinas de IA para perseguir o jogador com leve aleatoriedade.
+- Dois bots inimigos agora aparecem na arena.
+- Força de aceleração do carro do jogador aumentada.
+- Próximos passos: implementar power-ups temporários espalhados pela arena.
