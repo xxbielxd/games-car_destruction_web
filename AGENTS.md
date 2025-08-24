@@ -104,3 +104,4 @@ Atualize sempre que implementar algo relevante.
 - Dano varia conforme a direção do impacto (frente menos, lateral mais).
 - Testes cobrindo estado do jogo e cálculo de dano.
 - Música de fundo inicia apenas após interação do usuário para evitar erro NotAllowedError.
+- Correção: delta de tempo normalizado no menu para evitar tela preta ao iniciar.

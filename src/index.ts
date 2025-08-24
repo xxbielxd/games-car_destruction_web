@@ -228,13 +228,13 @@ function updateCamera() {
 let lastTime = performance.now();
 function animate() {
   requestAnimationFrame(animate);
+  const now = performance.now();
+  const delta = (now - lastTime) / 1000;
+  lastTime = now;
   if (!gameState.isPlaying()) {
     renderer.render(scene, camera);
     return;
   }
-  const now = performance.now();
-  const delta = (now - lastTime) / 1000;
-  lastTime = now;
 
   // Passe o delta para controles (suavização consistente)
   applyCarControls(player.body, keys, delta);
