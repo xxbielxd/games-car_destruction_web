@@ -81,3 +81,9 @@ Atualize sempre que implementar algo relevante.
 - Flag de derrapagem exposta no corpo do carro.
 - Testes garantem visibilidade apenas durante a derrapagem.
 - Próximos passos: implementar power-ups temporários e sistema de clima dinâmico.
+
+## 2025-09-01 - Power-ups temporários
+
+- Carros podem receber power-ups temporários de armadura.
+- Testes garantem que os efeitos expiram corretamente.
+- Próximos passos: implementar sistema de clima dinâmico e achievements para jogadores.
