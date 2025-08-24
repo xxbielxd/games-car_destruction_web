@@ -30,6 +30,16 @@ Protótipo de jogo web em Three.js onde o objetivo é destruir os outros carros 
    npm test
    ```
 
+## Rodar com Docker
+1. Construir a imagem:
+   ```bash
+   docker build -t car-destruction .
+   ```
+2. Executar o container:
+   ```bash
+   docker run -p 4173:4173 car-destruction
+   ```
+
 ## Estrutura de Pastas
 ```
 ├─ src/          # código fonte
@@ -44,11 +54,12 @@ Protótipo de jogo web em Three.js onde o objetivo é destruir os outros carros 
 - [x] Explosões visuais ao destruir carros.
 - [ ] Backend com Socket.IO e Redis para multiplayer.
 - [ ] Persistência de upgrades em banco de dados.
-- [ ] Containerização com Docker.
+- [x] Containerização com Docker.
 - [x] Efeitos sonoros ao colidir e destruir carros.
 - [x] Música de fundo dinâmica durante a batalha.
 - [ ] Sistema de partículas de poeira ao derrapar.
 - [ ] Power-ups temporários espalhados pela arena.
+- [ ] Sistema de replays das partidas.
 
 ## Licença
 Projeto criado para fins educativos.
