@@ -20,7 +20,8 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 const menuEl = document.getElementById('menu') as HTMLElement;
 const messageEl = document.getElementById('menu-message') as HTMLElement;
-const gameState = new GameState(menuEl, messageEl);
+const buttonEl = document.getElementById('menu-button') as HTMLButtonElement;
+const gameState = new GameState(menuEl, messageEl, buttonEl);
 
 // Luzes
 const light = new THREE.DirectionalLight(0xffffff, 1);

@@ -19,8 +19,10 @@ export class Body {
   velocity: Vec3 = new Vec3();
   angularVelocity: Vec3 = new Vec3();
   quaternion: any = {
-    vmult: (v: Vec3, target: Vec3) => { target.x=v.x; target.y=v.y; target.z=v.z; return target; },
-    toEuler: (v: Vec3) => { v.x=0; v.y=0; v.z=0; },
+    _euler: { x: 0, y: 0, z: 0 },
+    vmult(v: Vec3, target: Vec3) { target.x = v.x; target.y = v.y; target.z = v.z; return target; },
+    toEuler(v: Vec3) { v.x = this._euler.x; v.y = this._euler.y; v.z = this._euler.z; },
+    setFromEuler(x: number, y: number, z: number) { this._euler.x = x; this._euler.y = y; this._euler.z = z; },
   };
   torque: Vec3 = new Vec3();
   mass: number;
