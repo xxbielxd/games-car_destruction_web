@@ -11,6 +11,7 @@ import { computeCameraOffset } from './Camera.js';
 import Dust from './Dust.js';
 import GameState from './GameState.js';
 import { directionalDamage } from './Damage.js';
+import { syncEntityMeshes } from './entitySync.js';
 
 // Cena principal
 const scene = new THREE.Scene();
@@ -115,6 +116,10 @@ const followOffset = new THREE.Vector3(0, 5, 10);
 const explosions: Explosion[] = [];
 const dust = new Dust(THREE, scene);
 updateLifeBars();
+
+// Garante que os meshes comecem sincronizados com os corpos físicos
+syncEntityMeshes([player, ...enemies]);
+updateCamera();
 
 // Controle de câmera com botão direito
 let camYaw = 0;
@@ -247,11 +252,8 @@ function animate() {
     if (explosions[i].update(delta)) explosions.splice(i, 1);
   }
 
-  // Sincroniza mesh com corpo
-  [player, ...enemies].forEach((entity) => {
-    entity.mesh.position.copy(entity.body.position as any);
-    entity.mesh.quaternion.copy(entity.body.quaternion as any);
-  });
+  // Sincroniza meshes com os corpos
+  syncEntityMeshes([player, ...enemies]);
 
   dust.update(player.mesh.position, (player.body as any)._drifting);
 

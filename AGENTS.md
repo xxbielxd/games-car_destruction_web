@@ -105,3 +105,7 @@ Atualize sempre que implementar algo relevante.
 - Testes cobrindo estado do jogo e cálculo de dano.
 - Música de fundo inicia apenas após interação do usuário para evitar erro NotAllowedError.
 - Correção: delta de tempo normalizado no menu para evitar tela preta ao iniciar.
+
+## 2025-09-04 - Sincronização inicial de mesh/câmera
+
+- Meshes alinhados aos corpos físicos antes de iniciar animação para evitar tela preta inicial.
