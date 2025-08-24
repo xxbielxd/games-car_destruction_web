@@ -17,6 +17,9 @@ class StubVec3 {
   length() {
     return Math.sqrt(this.x ** 2 + this.y ** 2 + this.z ** 2);
   }
+  lengthSquared() {
+    return this.x ** 2 + this.y ** 2 + this.z ** 2;
+  }
   normalize() {
     const len = this.length();
     if (len > 0) {
@@ -44,6 +47,20 @@ test('pursuePlayer aplica força em direção ao player', () => {
     angularVelocity: { y: 0 },
     applyForce: (force: StubVec3) => {
       applied = force.clone();
+    },
+    torque: { y: 0 },
+    quaternion: {
+      toEuler: (v: any) => {
+        v.x = 0;
+        v.y = 0;
+        v.z = 0;
+      },
+      vmult: (v: StubVec3, target: StubVec3) => {
+        target.x = v.x;
+        target.y = v.y;
+        target.z = v.z;
+        return target;
+      },
     },
   };
   const playerPos = new StubVec3(10, 0, 0);

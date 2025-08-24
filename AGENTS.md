@@ -74,3 +74,10 @@ Atualize sempre que implementar algo relevante.
 - Adicionada imagem Docker multi-stage para build e preview do jogo.
 - Instruções de uso com Docker documentadas no README.
 - Próximos passos: configurar pipeline de CI para gerar a imagem automaticamente.
+
+## 2025-08-31 - Partículas de poeira
+
+- Sistema de poeira exibido quando o carro derrapa.
+- Flag de derrapagem exposta no corpo do carro.
+- Testes garantem visibilidade apenas durante a derrapagem.
+- Próximos passos: implementar power-ups temporários e sistema de clima dinâmico.

@@ -8,8 +8,8 @@ import * as CANNON from 'cannon-es';
  * - Clamp de velocidade para não virar míssil.
  */
 export function pursuePlayer(
-  enemyBody: CANNON.Body,
-  targetPos: CANNON.Vec3,
+  enemyBody: any,
+  targetPos: any,
   rand: () => number = Math.random,
 ): void {
   // Direção até o player (só no plano XZ)

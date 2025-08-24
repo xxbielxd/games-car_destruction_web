@@ -15,10 +15,22 @@ class StubVec3 {
     return new StubVec3(this.x, this.y, this.z);
   }
   scale(s: number, target: StubVec3 = this) {
-    target.x *= s;
-    target.y *= s;
-    target.z *= s;
+    target.x = this.x * s;
+    target.y = this.y * s;
+    target.z = this.z * s;
     return target;
+  }
+  dot(v: StubVec3) {
+    return this.x * v.x + this.y * v.y + this.z * v.z;
+  }
+  vsub(v: StubVec3, target: StubVec3) {
+    target.x = this.x - v.x;
+    target.y = this.y - v.y;
+    target.z = this.z - v.z;
+    return target;
+  }
+  length() {
+    return Math.hypot(this.x, this.y, this.z);
   }
 }
 
@@ -41,7 +53,7 @@ test('applyCarControls aplica força para frente com W', () => {
     velocity: new StubVec3(),
     quaternion: new IdentityQuat(),
   };
-  applyCarControls(body, { w: true }, StubVec3);
+  applyCarControls(body, { w: true });
   assert(applied !== null);
   assert(applied.z < 0);
 });
@@ -57,7 +69,7 @@ test('força de aceleração é suficientemente alta', () => {
     velocity: new StubVec3(),
     quaternion: new IdentityQuat(),
   };
-  applyCarControls(body, { w: true }, StubVec3);
+  applyCarControls(body, { w: true });
   assert(applied !== null);
   assert(Math.abs(applied.z) >= 8000);
 });
@@ -70,7 +82,7 @@ test('aplica freio de mão com espaço', () => {
     velocity: new StubVec3(1, 0, 0),
     quaternion: new IdentityQuat(),
   };
-  applyCarControls(body, { ' ': true }, StubVec3);
+  applyCarControls(body, { ' ': true });
   assert(Math.abs(body.velocity.x) < 1);
   assert(Math.abs(body.angularVelocity.y) < 1);
 });
@@ -94,7 +106,23 @@ test('usa orientação do corpo ao aplicar força', () => {
     velocity: new StubVec3(),
     quaternion: new FlipQuat(),
   };
-  applyCarControls(body, { w: true }, StubVec3);
+  applyCarControls(body, { w: true });
   assert(applied !== null);
   assert(applied.z > 0);
+});
+
+test('atribui flag de derrapagem no corpo', () => {
+  const body: any = {
+    applyForce: () => {},
+    position: new StubVec3(),
+    angularVelocity: new StubVec3(),
+    velocity: new StubVec3(5, 0, 0),
+    quaternion: new IdentityQuat(),
+  };
+  applyCarControls(body, {});
+  assert.equal(body._drifting, true);
+
+  body.velocity = new StubVec3(0, 0, -5);
+  applyCarControls(body, {});
+  assert.equal(body._drifting, false);
 });
