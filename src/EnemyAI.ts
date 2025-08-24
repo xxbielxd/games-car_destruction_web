@@ -5,7 +5,8 @@ export function pursuePlayer(
 ): void {
   const direction = targetPos.vsub(enemyBody.position);
   direction.normalize();
-  direction.scale(150, direction);
+  // Força elevada para garantir que os bots se movimentem
+  direction.scale(8000, direction);
   enemyBody.applyForce(direction, enemyBody.position);
   enemyBody.angularVelocity.y += (rand() - 0.5) * 0.2;
 }

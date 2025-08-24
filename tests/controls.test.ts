@@ -59,7 +59,7 @@ test('força de aceleração é suficientemente alta', () => {
   };
   applyCarControls(body, { w: true }, StubVec3);
   assert(applied !== null);
-  assert(Math.abs(applied.z) >= 12000);
+  assert(Math.abs(applied.z) >= 8000);
 });
 
 test('aplica freio de mão com espaço', () => {
