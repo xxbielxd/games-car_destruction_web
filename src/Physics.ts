@@ -4,7 +4,7 @@ import * as CANNON from 'cannon-es';
  * Configuração do mundo físico com foco em estabilidade.
  */
 export default class Physics {
-  world: CANNON.World;
+  world: any;
 
   constructor() {
     this.world = new CANNON.World({ gravity: new CANNON.Vec3(0, -25, 0) });

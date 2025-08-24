@@ -57,9 +57,10 @@ Protótipo de jogo web em Three.js onde o objetivo é destruir os outros carros 
 - [x] Containerização com Docker.
 - [x] Efeitos sonoros ao colidir e destruir carros.
 - [x] Música de fundo dinâmica durante a batalha.
-- [ ] Sistema de partículas de poeira ao derrapar.
+- [x] Sistema de partículas de poeira ao derrapar.
 - [ ] Power-ups temporários espalhados pela arena.
 - [ ] Sistema de replays das partidas.
+- [ ] Sistema de clima dinâmico (dia/noite e chuva).
 
 ## Licença
 Projeto criado para fins educativos.

@@ -11,7 +11,7 @@ import * as CANNON from 'cannon-es';
  * - Damping lateral dinâmico
  */
 export function applyCarControls(
-  body: CANNON.Body,
+  body: any,
   keys: Record<string, boolean>,
   dt: number = 1 / 60,
 ): void {
@@ -76,7 +76,7 @@ export function applyCarControls(
   const forwardWorld = new Vec3();
   body.quaternion.vmult(forwardLocal, forwardWorld);
 
-  const v = body.velocity as CANNON.Vec3;
+  const v = body.velocity as any;
   const speed = v.length();
 
   // Decompõe velocidade em longitudinal vs lateral
@@ -99,9 +99,11 @@ export function applyCarControls(
   // Ângulo de slip estável: atan2(lateral, |long|)
   const slipAngle = Math.atan2(lateralLen, Math.abs(speedForward) + 1e-6);
 
+  const drifting = slipAngle > 0.35; // ~20°
+  anyBody._drifting = drifting;
+
   // ====== Damping lateral dinâmico ======
   {
-    const drifting  = slipAngle > 0.35;     // ~20°
     const reversing = speedForward < -0.5;
     const damp = (drifting || reversing) ? HIGH_LATERAL_DAMP : BASE_LATERAL_DAMP;
 

@@ -8,6 +8,7 @@ import Sound from './Sound.js';
 import { applyCarControls } from './Controls.js';
 import { pursuePlayer } from './EnemyAI.js';
 import { computeCameraOffset } from './Camera.js';
+import Dust from './Dust.js';
 
 // Cena principal
 const scene = new THREE.Scene();
@@ -107,6 +108,7 @@ const enemies: CarEntity[] = [
 
 const followOffset = new THREE.Vector3(0, 5, 10);
 const explosions: Explosion[] = [];
+const dust = new Dust(THREE, scene);
 
 // ================== Input (normalizado) ==================
 const keys: Record<string, boolean> = {};
@@ -213,6 +215,8 @@ function animate() {
     entity.mesh.position.copy(entity.body.position as any);
     entity.mesh.quaternion.copy(entity.body.quaternion as any);
   });
+
+  dust.update(player.mesh.position, (player.body as any)._drifting);
 
   updateCamera();
   renderer.render(scene, camera);
