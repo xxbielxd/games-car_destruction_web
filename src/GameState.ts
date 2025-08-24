@@ -5,11 +5,18 @@ export default class GameState {
   private menu: HTMLElement;
   private message: HTMLElement;
   private button: HTMLButtonElement;
+  private onStart?: () => void;
 
-  constructor(menu: HTMLElement, message: HTMLElement, button: HTMLButtonElement) {
+  constructor(
+    menu: HTMLElement,
+    message: HTMLElement,
+    button: HTMLButtonElement,
+    onStart?: () => void,
+  ) {
     this.menu = menu;
     this.message = message;
     this.button = button;
+    this.onStart = onStart;
     this.button.addEventListener('click', () => this.start());
     this.show('Pressione Enter ou clique em Iniciar', 'Iniciar');
   }
@@ -27,6 +34,7 @@ export default class GameState {
   start(): void {
     this.state = 'playing';
     this.hide();
+    this.onStart?.();
   }
 
   gameOver(): void {

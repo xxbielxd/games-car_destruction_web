@@ -26,7 +26,7 @@ export default class Sound {
 
   playBackground(): void {
     this.backgroundAudio.currentTime = 0;
-    void this.backgroundAudio.play();
+    void this.backgroundAudio.play().catch(() => {});
   }
 
   setBackgroundIntensity(intensity: number): void {

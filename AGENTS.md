@@ -103,3 +103,4 @@ Atualize sempre que implementar algo relevante.
 - IA dos bots avança com força maior na direção do jogador.
 - Dano varia conforme a direção do impacto (frente menos, lateral mais).
 - Testes cobrindo estado do jogo e cálculo de dano.
+- Música de fundo inicia apenas após interação do usuário para evitar erro NotAllowedError.

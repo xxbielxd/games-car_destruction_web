@@ -21,7 +21,8 @@ document.body.appendChild(renderer.domElement);
 const menuEl = document.getElementById('menu') as HTMLElement;
 const messageEl = document.getElementById('menu-message') as HTMLElement;
 const buttonEl = document.getElementById('menu-button') as HTMLButtonElement;
-const gameState = new GameState(menuEl, messageEl, buttonEl);
+const sound = new Sound();
+const gameState = new GameState(menuEl, messageEl, buttonEl, () => sound.playBackground());
 
 // Luzes
 const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -32,8 +33,6 @@ scene.add(new THREE.AmbientLight(0xffffff, 0.4));
 // Física
 const physics = new Physics();
 new Arena(scene, physics.world, 120);
-const sound = new Sound();
-sound.playBackground();
 
 // Tipagem
 interface CarEntity {
