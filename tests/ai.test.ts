@@ -50,5 +50,6 @@ test('pursuePlayer aplica força em direção ao player', () => {
   pursuePlayer(enemyBody, playerPos, () => 0.5);
   assert(applied !== null);
   assert(applied!.x > 0);
+  assert(applied!.length() >= 8000);
   assert.equal(enemyBody.angularVelocity.y, 0);
 });

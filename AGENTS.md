@@ -60,3 +60,11 @@ Atualize sempre que implementar algo relevante.
 - Dois bots inimigos agora aparecem na arena.
 - Força de aceleração do carro do jogador aumentada.
 - Próximos passos: implementar power-ups temporários espalhados pela arena.
+
+## 2025-08-29 - Correções de câmera e movimento
+
+- Câmera pode ser reposicionada segurando o botão direito do mouse.
+- Força de aceleração reduzida e curva com limite de rotação para evitar derrapagens.
+- Bots agora recebem força maior para se moverem.
+- Testes atualizados e novo teste para cálculo de câmera.
+- Próximos passos: ajustar derrapagem lateral do carro.

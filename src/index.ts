@@ -7,6 +7,7 @@ import Explosion from './Explosion.js';
 import Sound from './Sound.js';
 import { applyCarControls } from './Controls.js';
 import { pursuePlayer } from './EnemyAI.js';
+import { computeCameraOffset } from './Camera.js';
 
 // Cena principal
 const scene = new THREE.Scene();
@@ -124,6 +125,27 @@ document.addEventListener('keydown', (e) => {
 });
 document.addEventListener('keyup', (e) => (keys[e.key] = false));
 
+// Controle de câmera com botão direito do mouse
+let rightMouseDown = false;
+let cameraYaw = 0;
+let cameraPitch = 0;
+document.addEventListener('contextmenu', (e) => e.preventDefault());
+document.addEventListener('mousedown', (e) => {
+  if (e.button === 2) rightMouseDown = true;
+});
+document.addEventListener('mouseup', (e) => {
+  if (e.button === 2) rightMouseDown = false;
+});
+document.addEventListener('mousemove', (e) => {
+  if (rightMouseDown) {
+    cameraYaw -= e.movementX * 0.005;
+    cameraPitch -= e.movementY * 0.005;
+    const limit = Math.PI / 4;
+    if (cameraPitch > limit) cameraPitch = limit;
+    if (cameraPitch < -limit) cameraPitch = -limit;
+  }
+});
+
 // IA simples: inimigo persegue o jogador
 function handleEnemyAI() {
   enemies.forEach((enemy) =>
@@ -169,10 +191,14 @@ function checkDestroyed(entity: CarEntity) {
 }
 
 function updateCamera() {
-  const offset = followOffset
-    .clone()
-    .applyQuaternion(player.mesh.quaternion as any);
-  camera.position.copy(player.mesh.position.clone().add(offset));
+  const offset = computeCameraOffset(
+    followOffset,
+    cameraYaw,
+    cameraPitch,
+    player.mesh.quaternion as any,
+  );
+  const offsetVec = new THREE.Vector3(offset.x, offset.y, offset.z);
+  camera.position.copy(player.mesh.position.clone().add(offsetVec));
   camera.lookAt(player.mesh.position);
 }
 
