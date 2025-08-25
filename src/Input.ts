@@ -1,4 +1,4 @@
-export const normalizeKey = (k: string) => k.toLowerCase();
+export const normalizeKey = (k: string | undefined) => (k ?? '').toLowerCase();
 export const mapArrow = (k: string) => {
   switch (k) {
     case 'arrowup':
@@ -27,7 +27,7 @@ export function createKeyTracker(
   const keys: Record<string, boolean> = {};
 
   const handle = (pressed: boolean) => (e: any) => {
-    let k = normalizeKey(e.key);
+    let k = normalizeKey(e.key || e.code);
     k = mapping[k] ?? mapArrow(k);
     keys[k] = pressed;
     onKey?.(k, pressed);
