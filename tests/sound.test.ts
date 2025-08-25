@@ -9,6 +9,7 @@ test('Sound reproduz efeitos e música de fundo', () => {
     currentTime = 0;
     loop = false;
     playbackRate = 1;
+    volume = 1;
     play = playFn;
     pause = () => {};
     constructor(_src?: string) {}
@@ -22,9 +23,11 @@ test('Sound reproduz efeitos e música de fundo', () => {
   sound.playDestruction();
   sound.playBackground();
   sound.setBackgroundIntensity(1.5);
+  sound.setVolume(0.5);
 
   assert.equal(playFn.mock.callCount(), 3);
   assert.equal((sound as any).backgroundAudio.playbackRate, 1.5);
+  assert.equal((sound as any).collisionAudio.volume, 0.5);
 
   if (OriginalAudio) (globalThis as any).Audio = OriginalAudio;
 });
