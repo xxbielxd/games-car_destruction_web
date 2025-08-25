@@ -15,7 +15,7 @@ import { syncEntityMeshes } from './entitySync.js';
 import Achievements from './Achievements.js';
 import Weather from './Weather.js';
 import { setCarColor } from './Customization.js';
-import { resetCarEntity } from './Reset.js';
+import { resetCarEntity, clearKeys } from './Reset.js';
 
 // Cena principal
 const scene = new THREE.Scene();
@@ -142,7 +142,10 @@ function resetGame() {
     createCarEntity('enemy1', 0xff0000, enemyStarts[0]),
     createCarEntity('enemy2', 0x00ff00, enemyStarts[1]),
   );
-
+  clearKeys(keys);
+  rotating = false;
+  explosions.forEach((ex) => scene.remove(ex.mesh));
+  explosions.length = 0;
   updateLifeBars();
   camYaw = 0;
   camPitch = 0;

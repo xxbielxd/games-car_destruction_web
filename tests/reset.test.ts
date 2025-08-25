@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert';
 import Car from '../src/Car.js';
-import { resetCarEntity } from '../src/Reset.js';
+import { resetCarEntity, clearKeys } from '../src/Reset.js';
 
 class Vec {
   x = 0;
@@ -38,4 +38,11 @@ test('resetCarEntity restaura vida e transforma', () => {
   assert.equal(entity.body.position.x, 10);
   assert.equal(entity.body.velocity.y, 0);
   assert.equal(entity.mesh.position.z, -5);
+});
+
+test('clearKeys desativa todas as teclas', () => {
+  const keys: Record<string, boolean> = { w: true, a: true };
+  clearKeys(keys);
+  assert.equal(keys.w, false);
+  assert.equal(keys.a, false);
 });

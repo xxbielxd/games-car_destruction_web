@@ -24,3 +24,9 @@ export function resetCarEntity(entity: ResettableEntity, position: Vec3Like): vo
   entity.mesh.position.set(position.x, position.y, position.z);
   entity.mesh.quaternion.set(0, 0, 0, 1);
 }
+
+export function clearKeys(keys: Record<string, boolean>): void {
+  Object.keys(keys).forEach((k) => {
+    keys[k] = false;
+  });
+}

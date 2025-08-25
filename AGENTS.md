@@ -145,3 +145,8 @@ Atualize sempre que implementar algo relevante.
 - Implementada função de reinício para restaurar jogador e inimigos ao clicar em Iniciar.
 - Função `resetCarEntity` reutilizável para resetar carros.
 - Teste cobrindo reinicialização de entidades.
+
+## 2025-09-11 - Limpeza de estado ao reiniciar
+
+- Reset das teclas pressionadas e remoção de explosões pendentes ao reiniciar o jogo.
+- Função `clearKeys` adicionada para limpar mapa de entrada com teste dedicado.
