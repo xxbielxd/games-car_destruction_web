@@ -23,6 +23,16 @@ export default class Weather {
   }
 
   /**
+   * Reinicia o ciclo climático para o dia inicial.
+   * Utilizado ao reiniciar o jogo para evitar tela escura.
+   */
+  reset(): void {
+    this.t = 0;
+    this.dir.intensity = 1;
+    this.amb.intensity = 0.5;
+  }
+
+  /**
    * Retorna o valor normalizado do ciclo atual (0 = dia, 1 = volta ao dia).
    */
   getCycle(): number {

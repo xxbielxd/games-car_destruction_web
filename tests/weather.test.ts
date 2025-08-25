@@ -22,3 +22,14 @@ test('weather cycle wraps around', () => {
   for (let i = 0; i < 1000; i++) weather.update(1);
   assert.equal(weather.getCycle() < 1, true);
 });
+
+test('weather reset restaura ciclo e intensidades', () => {
+  const dir = new Light();
+  const amb = new Light();
+  const weather = new Weather(dir as any, amb as any);
+  weather.update(10); // avança para noite
+  weather.reset();
+  assert.equal(weather.getCycle(), 0);
+  assert.equal(dir.intensity, 1);
+  assert.equal(amb.intensity, 0.5);
+});
