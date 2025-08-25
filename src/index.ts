@@ -12,6 +12,7 @@ import Dust from './Dust.js';
 import GameState from './GameState.js';
 import { directionalDamage } from './Damage.js';
 import { syncEntityMeshes } from './entitySync.js';
+import Achievements from './Achievements.js';
 
 // Cena principal
 const scene = new THREE.Scene();
@@ -23,7 +24,12 @@ const menuEl = document.getElementById('menu') as HTMLElement;
 const messageEl = document.getElementById('menu-message') as HTMLElement;
 const buttonEl = document.getElementById('menu-button') as HTMLButtonElement;
 const sound = new Sound();
-const gameState = new GameState(menuEl, messageEl, buttonEl, () => sound.playBackground());
+let lastTime = performance.now();
+const gameState = new GameState(menuEl, messageEl, buttonEl, () => {
+  sound.playBackground();
+  lastTime = performance.now();
+});
+const achievements = new Achievements();
 
 // Luzes
 const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -210,7 +216,11 @@ function checkDestroyed(entity: CarEntity) {
     scene.remove(entity.mesh);
     physics.world.removeBody(entity.body);
     const idx = enemies.indexOf(entity);
-    if (idx !== -1) enemies.splice(idx, 1);
+    if (idx !== -1) {
+      enemies.splice(idx, 1);
+      const unlocked = achievements.registerKill();
+      if (unlocked) console.log(`Achievement desbloqueado: ${unlocked}`);
+    }
     if (entity === player) {
       gameState.gameOver();
     }
@@ -230,7 +240,6 @@ function updateCamera() {
 }
 
 // Loop principal
-let lastTime = performance.now();
 function animate() {
   requestAnimationFrame(animate);
   const now = performance.now();
