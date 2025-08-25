@@ -139,3 +139,9 @@ Atualize sempre que implementar algo relevante.
 
 - camYaw e camPitch declarados antes da criação do GameState para evitar ReferenceError ao iniciar rapidamente.
 - Teste garantindo reinicialização das variáveis de câmera.
+
+## 2025-09-10 - Reinício do jogo
+
+- Implementada função de reinício para restaurar jogador e inimigos ao clicar em Iniciar.
+- Função `resetCarEntity` reutilizável para resetar carros.
+- Teste cobrindo reinicialização de entidades.
