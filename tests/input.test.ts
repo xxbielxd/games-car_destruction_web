@@ -27,6 +27,21 @@ test('createKeyTracker registra teclas e mapeia setas', () => {
   tracker.dispose();
 });
 
+test('createKeyTracker usa code quando key ausente', () => {
+  const handlers: Record<string, (e: any) => void> = {};
+  const target = {
+    addEventListener: (name: string, fn: any) => {
+      handlers[name] = fn;
+    },
+    removeEventListener: () => {},
+  } as any;
+
+  const tracker = createKeyTracker(target);
+  handlers.keydown({ code: 'ArrowUp', preventDefault() {} });
+  assert.equal(tracker.keys['w'], true);
+  tracker.dispose();
+});
+
 test('createKeyTracker aceita mapeamento customizado', () => {
   const handlers: Record<string, (e: any) => void> = {};
   const target = {

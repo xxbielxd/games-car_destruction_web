@@ -174,3 +174,9 @@ Atualize sempre que implementar algo relevante.
 - Controles de entrada agora utilizam `createKeyTracker`, permitindo extensões para múltiplos jogadores.
 - Testes garantindo registro de teclas e mapeamentos customizados.
 - Próximos passos: utilizar `createKeyTracker` para adicionar segundo jogador controlado via setas.
+
+## 2025-09-16 - Robustez de entrada e docker-compose
+
+- `createKeyTracker` agora usa `event.code` como fallback para garantir movimento com WASD e setas.
+- Teste cobrindo o uso de `code` quando `key` está ausente.
+- `docker-compose.yml` adicionado para subir o jogo com um único comando.

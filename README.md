@@ -44,6 +44,13 @@ Protótipo de jogo web em Three.js onde o objetivo é destruir os outros carros 
    docker run -p 4173:4173 car-destruction
    ```
 
+## Rodar com Docker Compose
+
+1. Subir o serviço:
+   ```bash
+   docker compose up --build
+   ```
+
 ## Controles
 
 - **W** ou **seta para cima**: acelerar
