@@ -9,3 +9,12 @@ test('Body quaternion aceita setFromEuler', () => {
   b.quaternion.toEuler(e);
   assert.deepStrictEqual(e, { x: 1, y: 2, z: 3 });
 });
+
+test('Body quaternion aceita set', () => {
+  const b = new Body();
+  b.quaternion.set(1, 2, 3, 4);
+  assert.deepStrictEqual(
+    { x: b.quaternion.x, y: b.quaternion.y, z: b.quaternion.z, w: b.quaternion.w },
+    { x: 1, y: 2, z: 3, w: 4 },
+  );
+});

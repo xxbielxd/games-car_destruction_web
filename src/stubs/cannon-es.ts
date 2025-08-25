@@ -14,16 +14,47 @@ export class Vec3 {
   copy(v: Vec3): Vec3 { this.x = v.x; this.y = v.y; this.z = v.z; return this; }
 }
 
+class Quaternion {
+  x = 0;
+  y = 0;
+  z = 0;
+  w = 1;
+  _euler = { x: 0, y: 0, z: 0 };
+  vmult(v: Vec3, target: Vec3): Vec3 {
+    target.x = v.x;
+    target.y = v.y;
+    target.z = v.z;
+    return target;
+  }
+  toEuler(v: Vec3): void {
+    v.x = this._euler.x;
+    v.y = this._euler.y;
+    v.z = this._euler.z;
+  }
+  setFromEuler(x: number, y: number, z: number): void {
+    this._euler.x = x;
+    this._euler.y = y;
+    this._euler.z = z;
+  }
+  set(x: number, y: number, z: number, w: number): void {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+    this.w = w;
+  }
+  copy(q: Quaternion): void {
+    this.x = q.x;
+    this.y = q.y;
+    this.z = q.z;
+    this.w = q.w;
+  }
+}
+
 export class Body {
   position: Vec3 = new Vec3();
   velocity: Vec3 = new Vec3();
   angularVelocity: Vec3 = new Vec3();
-  quaternion: any = {
-    _euler: { x: 0, y: 0, z: 0 },
-    vmult(v: Vec3, target: Vec3) { target.x = v.x; target.y = v.y; target.z = v.z; return target; },
-    toEuler(v: Vec3) { v.x = this._euler.x; v.y = this._euler.y; v.z = this._euler.z; },
-    setFromEuler(x: number, y: number, z: number) { this._euler.x = x; this._euler.y = y; this._euler.z = z; },
-  };
+  quaternion: Quaternion = new Quaternion();
   torque: Vec3 = new Vec3();
   mass: number;
   angularFactor: Vec3 = new Vec3(1,1,1);
