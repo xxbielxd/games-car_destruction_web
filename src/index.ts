@@ -19,7 +19,12 @@ import { resetCarEntity, clearKeys } from './Reset.js';
 
 // Cena principal
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000,
+);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
@@ -80,9 +85,9 @@ function createCarEntity(id: string, color: number, position: any): CarEntity {
   const wheelMat = new THREE.MeshStandardMaterial({ color: 0x333333 });
   const wheelPositions = [
     [-1, 0.25, -1.5],
-    [ 1, 0.25, -1.5],
-    [-1, 0.25,  1.5],
-    [ 1, 0.25,  1.5],
+    [1, 0.25, -1.5],
+    [-1, 0.25, 1.5],
+    [1, 0.25, 1.5],
   ];
   wheelPositions.forEach((pos) => {
     const wheel = new THREE.Mesh(wheelGeo, wheelMat);
@@ -100,15 +105,18 @@ function createCarEntity(id: string, color: number, position: any): CarEntity {
   body.position.copy(position);
 
   // Damping / rotação (evita capote e vibrações)
-  body.angularFactor.set(0, 1, 0);   // gira só no Y
-  body.linearDamping = 0.20;         // arrasto linear
-  body.angularDamping = 0.55;        // arrasto angular
+  body.angularFactor.set(0, 1, 0); // gira só no Y
+  body.linearDamping = 0.2; // arrasto linear
+  body.angularDamping = 0.55; // arrasto angular
 
   physics.world.addBody(body);
 
   // Barra de vida
   const barGeo = new THREE.PlaneGeometry(2, 0.2);
-  const barMat = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.DoubleSide });
+  const barMat = new THREE.MeshBasicMaterial({
+    color: 0x00ff00,
+    side: THREE.DoubleSide,
+  });
   const lifeBar = new THREE.Mesh(barGeo, barMat);
   lifeBar.position.set(0, 1.2, 0);
   group.add(lifeBar);
@@ -118,21 +126,25 @@ function createCarEntity(id: string, color: number, position: any): CarEntity {
 const availableColors = [0x0000ff, 0xff0000, 0x00ff00];
 let selectedColor = availableColors[0];
 const playerStart = new CANNON.Vec3(-5, 0.5, 0);
-const enemyStarts = [
-  new CANNON.Vec3(5, 0.5, 0),
-  new CANNON.Vec3(0, 0.5, 5),
-];
+const enemyStarts = [new CANNON.Vec3(5, 0.5, 0), new CANNON.Vec3(0, 0.5, 5)];
 const player = createCarEntity('player', selectedColor, playerStart);
 const enemies: CarEntity[] = [
   createCarEntity('enemy1', 0xff0000, enemyStarts[0]),
   createCarEntity('enemy2', 0x00ff00, enemyStarts[1]),
 ];
 
+// Mapa de teclas deve existir antes de qualquer reinicialização
+// para evitar ReferenceError caso o jogo seja iniciado rapidamente.
+const keys: Record<string, boolean> = {};
+// Flag de rotação da câmera definida antecipadamente pela mesma razão.
+let rotating = false;
+
 function resetGame() {
   resetCarEntity(player, playerStart);
   setCarColor(player, selectedColor);
   if (!scene.children.includes(player.mesh)) scene.add(player.mesh);
-  if (!physics.world.bodies.includes(player.body)) physics.world.addBody(player.body);
+  if (!physics.world.bodies.includes(player.body))
+    physics.world.addBody(player.body);
 
   enemies.forEach((e) => {
     scene.remove(e.mesh);
@@ -168,7 +180,6 @@ const dust = new Dust(THREE, scene);
 updateLifeBars();
 
 // Controle de câmera com botão direito
-let rotating = false;
 document.addEventListener('contextmenu', (e) => e.preventDefault());
 document.addEventListener('mousedown', (e) => {
   if (e.button === 2) rotating = true;
@@ -211,7 +222,7 @@ document.addEventListener('keydown', (e) => {
     selectedColor = availableColors[Number(k) - 1];
     setCarColor(player, selectedColor);
     return;
-    }
+  }
   keys[k] = true;
   if (k === 'u') {
     player.car.addUpgrade({ id: 'armor', bonusHealth: 20 });
@@ -247,7 +258,9 @@ player.body.addEventListener('collide', (event: any) => {
 function updateLifeBars() {
   [player, ...enemies].forEach((entity) => {
     const ratio = entity.car.health / entity.car.maxHealth;
-    (entity.lifeBar.material as any).color.set(ratio > 0.3 ? 0x00ff00 : 0xff0000);
+    (entity.lifeBar.material as any).color.set(
+      ratio > 0.3 ? 0x00ff00 : 0xff0000,
+    );
     entity.lifeBar.scale.x = ratio;
     entity.lifeBar.position.x = -1 + ratio;
   });

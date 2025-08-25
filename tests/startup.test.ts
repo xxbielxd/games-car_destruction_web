@@ -20,3 +20,15 @@ test('iniciar imediatamente reinicia variáveis e limpa teclas', () => {
   assert.equal(camPitch, 0);
   assert.equal(keys.w, false);
 });
+
+test('iniciar imediatamente limpa mapa de teclas', () => {
+  const menuEl: any = { style: { display: 'none' } };
+  const msgEl: any = { textContent: '' };
+  const btnEl: any = { textContent: '', addEventListener: () => {} };
+  const keys: Record<string, boolean> = { w: true };
+  const gs = new GameState(menuEl, msgEl, btnEl, () => {
+    clearKeys(keys);
+  });
+  assert.doesNotThrow(() => gs.start());
+  assert.equal(keys.w, false);
+});
