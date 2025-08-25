@@ -167,3 +167,10 @@ Atualize sempre que implementar algo relevante.
 - Velocidade lateral suavizada em `applyCarControls` para reduzir derrapagem.
 - Testes para mapeamento de setas e redução da derrapagem.
 - Próximos passos: investigar suporte a múltiplos jogadores no sistema de entrada.
+
+## 2025-09-15 - Correção de controles e rastreamento de múltiplos jogadores
+
+- Função `createKeyTracker` adicionada para normalizar e mapear teclas com `preventDefault`.
+- Controles de entrada agora utilizam `createKeyTracker`, permitindo extensões para múltiplos jogadores.
+- Testes garantindo registro de teclas e mapeamentos customizados.
+- Próximos passos: utilizar `createKeyTracker` para adicionar segundo jogador controlado via setas.

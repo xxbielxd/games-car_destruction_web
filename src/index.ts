@@ -16,7 +16,7 @@ import Achievements from './Achievements.js';
 import Weather from './Weather.js';
 import { setCarColor } from './Customization.js';
 import { resetCarEntity, clearKeys } from './Reset.js';
-import { normalizeKey, mapArrow } from './Input.js';
+import { createKeyTracker } from './Input.js';
 
 // Cena principal
 const scene = new THREE.Scene();
@@ -38,7 +38,22 @@ let camYaw = 0;
 let camPitch = 0;
 // Mapa de teclas deve existir antes de qualquer reinicialização
 // para evitar ReferenceError caso o jogo seja iniciado rapidamente.
-const keys: Record<string, boolean> = {};
+const { keys } = createKeyTracker(document, {}, (k, pressed) => {
+  if (!pressed) return;
+  if (k === 'enter' && !gameState.isPlaying()) {
+    gameState.start();
+    return;
+  }
+  if (!gameState.isPlaying() && ['1', '2', '3'].includes(k)) {
+    selectedColor = availableColors[Number(k) - 1];
+    setCarColor(player, selectedColor);
+    return;
+  }
+  if (k === 'u') {
+    player.car.addUpgrade({ id: 'armor', bonusHealth: 20 });
+    updateLifeBars();
+  }
+});
 // Flag de rotação da câmera definida antecipadamente pela mesma razão.
 let rotating = false;
 
@@ -197,30 +212,7 @@ document.addEventListener('mousemove', (e) => {
 syncEntityMeshes([player, ...enemies]);
 updateCamera();
 
-// ================== Input (normalizado) ==================
 
-document.addEventListener('keydown', (e) => {
-  const k = mapArrow(normalizeKey(e.key));
-  if (k === 'enter' && !gameState.isPlaying()) {
-    gameState.start();
-    return;
-  }
-  if (!gameState.isPlaying() && ['1', '2', '3'].includes(k)) {
-    selectedColor = availableColors[Number(k) - 1];
-    setCarColor(player, selectedColor);
-    return;
-  }
-  keys[k] = true;
-  if (k === 'u') {
-    player.car.addUpgrade({ id: 'armor', bonusHealth: 20 });
-    updateLifeBars();
-  }
-});
-document.addEventListener('keyup', (e) => {
-  const k = mapArrow(normalizeKey(e.key));
-  keys[k] = false;
-});
-// =========================================================
 
 // IA: inimigo persegue o jogador
 function handleEnemyAI() {
