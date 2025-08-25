@@ -113,3 +113,10 @@ Atualize sempre que implementar algo relevante.
 ## 2025-09-05 - Correção de inicialização da câmera
 
 - camYaw e camPitch definidos antes do primeiro updateCamera para evitar ReferenceError.
+
+## 2025-09-06 - Sistema de achievements e ajustes de início
+
+- Conquista 'Primeiro Abate' ao destruir o primeiro inimigo.
+- Delta de tempo reiniciado ao iniciar para evitar travamento inicial.
+- Teste cobrindo desbloqueio de achievements.
+- Próximos passos: implementar leaderboard global de pontuações.

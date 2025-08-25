@@ -61,7 +61,8 @@ Protótipo de jogo web em Three.js onde o objetivo é destruir os outros carros 
 - [x] Power-ups temporários espalhados pela arena.
 - [ ] Sistema de replays das partidas.
 - [ ] Sistema de clima dinâmico (dia/noite e chuva).
-- [ ] Sistema de achievements para jogadores.
+- [x] Sistema de achievements para jogadores.
+- [ ] Leaderboard global de pontuações.
 
 ## Licença
 Projeto criado para fins educativos.
