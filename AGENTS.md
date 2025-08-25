@@ -134,3 +134,8 @@ Atualize sempre que implementar algo relevante.
 - camYaw e camPitch reiniciados ao iniciar para evitar tela escura.
 - Teste cobrindo alteração de cor via setCarColor.
 - Próximos passos: implementar modo espectador após destruição do jogador.
+
+## 2025-09-09 - Correção de corrida de inicialização
+
+- camYaw e camPitch declarados antes da criação do GameState para evitar ReferenceError ao iniciar rapidamente.
+- Teste garantindo reinicialização das variáveis de câmera.
