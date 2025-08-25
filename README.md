@@ -63,7 +63,8 @@ Protótipo de jogo web em Three.js onde o objetivo é destruir os outros carros 
 - [x] Sistema de clima dinâmico (dia/noite e chuva).
 - [x] Sistema de achievements para jogadores.
 - [ ] Leaderboard global de pontuações.
-- [ ] Sistema de personalização de carros.
+- [x] Sistema de personalização de carros.
+- [ ] Modo espectador após destruição do jogador.
 
 ## Licença
 Projeto criado para fins educativos.
