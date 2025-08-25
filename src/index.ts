@@ -30,6 +30,7 @@ const sound = new Sound();
 let lastTime = performance.now();
 let camYaw = 0;
 let camPitch = 0;
+const keys: Record<string, boolean> = {};
 
 // Luzes
 const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -187,7 +188,6 @@ syncEntityMeshes([player, ...enemies]);
 updateCamera();
 
 // ================== Input (normalizado) ==================
-const keys: Record<string, boolean> = {};
 const normalizeKey = (k: string) => k.toLowerCase();
 const mapArrow = (k: string) => {
   switch (k) {
