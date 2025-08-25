@@ -39,7 +39,14 @@ test('createKeyTracker usa code quando key ausente', () => {
   const tracker = createKeyTracker(target);
   handlers.keydown({ code: 'ArrowUp', preventDefault() {} });
   assert.equal(tracker.keys['w'], true);
+  handlers.keydown({ code: 'KeyW', preventDefault() {} });
+  assert.equal(tracker.keys['w'], true);
   tracker.dispose();
+});
+
+test('normalizeKey converte codes especiais', () => {
+  assert.equal(normalizeKey('KeyW'), 'w');
+  assert.equal(normalizeKey('Space'), ' ');
 });
 
 test('createKeyTracker aceita mapeamento customizado', () => {

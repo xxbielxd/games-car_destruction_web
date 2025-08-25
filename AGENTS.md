@@ -180,3 +180,9 @@ Atualize sempre que implementar algo relevante.
 - `createKeyTracker` agora usa `event.code` como fallback para garantir movimento com WASD e setas.
 - Teste cobrindo o uso de `code` quando `key` está ausente.
 - `docker-compose.yml` adicionado para subir o jogo com um único comando.
+
+## 2025-09-17 - Correção de teclas e controle de volume
+
+- `normalizeKey` interpreta códigos como `KeyW` e `Space`, garantindo movimento mesmo sem `key`.
+- `Sound` agora possui `setVolume` para ajustar volume globalmente.
+- Testes atualizados para cobrir novos comportamentos de entrada e volume.

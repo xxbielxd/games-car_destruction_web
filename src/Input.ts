@@ -1,4 +1,9 @@
-export const normalizeKey = (k: string | undefined) => (k ?? '').toLowerCase();
+export const normalizeKey = (k: string | undefined) => {
+  const lower = (k ?? '').toLowerCase();
+  if (lower.startsWith('key')) return lower.slice(3);
+  if (lower === 'space') return ' ';
+  return lower;
+};
 export const mapArrow = (k: string) => {
   switch (k) {
     case 'arrowup':

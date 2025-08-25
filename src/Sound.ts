@@ -2,6 +2,7 @@ export default class Sound {
   private collisionAudio: HTMLAudioElement;
   private destructionAudio: HTMLAudioElement;
   private backgroundAudio: HTMLAudioElement;
+  private volume = 1;
 
   constructor(
     collisionSrc = 'assets/collision.wav',
@@ -31,5 +32,12 @@ export default class Sound {
 
   setBackgroundIntensity(intensity: number): void {
     this.backgroundAudio.playbackRate = intensity;
+  }
+
+  setVolume(volume: number): void {
+    this.volume = Math.min(1, Math.max(0, volume));
+    this.collisionAudio.volume = this.volume;
+    this.destructionAudio.volume = this.volume;
+    this.backgroundAudio.volume = this.volume;
   }
 }
