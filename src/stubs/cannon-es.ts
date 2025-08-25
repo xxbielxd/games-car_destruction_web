@@ -78,9 +78,10 @@ export class World {
   defaultContactMaterial: any = {};
   solver: any = { iterations: 0, tolerance: 0 };
   allowSleep = false;
+  bodies: Body[] = [];
   constructor(opts:any={}){ this.gravity = opts.gravity || new Vec3(); }
-  addBody(_body: Body){}
-  removeBody(_body: Body){}
+  addBody(body: Body){ this.bodies.push(body); }
+  removeBody(body: Body){ this.bodies = this.bodies.filter(b=>b!==body); }
   step(_dt: number, _dt2?: number, _dt3?: number){}
 }
 
