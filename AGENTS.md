@@ -127,3 +127,10 @@ Atualize sempre que implementar algo relevante.
 - Ciclo de clima dinâmico controlando luzes do cenário.
 - Testes garantem atualização do ciclo de clima.
 - Próximos passos: sistema de personalização de carros.
+
+## 2025-09-08 - Personalização de carros e ajuste de câmera
+
+- Jogador pode escolher a cor do carro antes de iniciar (teclas 1-3).
+- camYaw e camPitch reiniciados ao iniciar para evitar tela escura.
+- Teste cobrindo alteração de cor via setCarColor.
+- Próximos passos: implementar modo espectador após destruição do jogador.

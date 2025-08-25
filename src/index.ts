@@ -14,6 +14,7 @@ import { directionalDamage } from './Damage.js';
 import { syncEntityMeshes } from './entitySync.js';
 import Achievements from './Achievements.js';
 import Weather from './Weather.js';
+import { setCarColor } from './Customization.js';
 
 // Cena principal
 const scene = new THREE.Scene();
@@ -45,6 +46,7 @@ interface CarEntity {
   mesh: any;
   body: any;
   lifeBar: any;
+  material: any;
 }
 
 function createCarEntity(id: string, color: number, position: any): CarEntity {
@@ -107,10 +109,11 @@ function createCarEntity(id: string, color: number, position: any): CarEntity {
   lifeBar.position.set(0, 1.2, 0);
   group.add(lifeBar);
 
-  return { car, mesh: group, body, lifeBar };
+  return { car, mesh: group, body, lifeBar, material: bodyMaterial };
 }
-
-const player = createCarEntity('player', 0x0000ff, new CANNON.Vec3(-5, 0.5, 0));
+const availableColors = [0x0000ff, 0xff0000, 0x00ff00];
+let selectedColor = availableColors[0];
+const player = createCarEntity('player', selectedColor, new CANNON.Vec3(-5, 0.5, 0));
 const enemies: CarEntity[] = [
   createCarEntity('enemy1', 0xff0000, new CANNON.Vec3(5, 0.5, 0)),
   createCarEntity('enemy2', 0x00ff00, new CANNON.Vec3(0, 0.5, 5)),
@@ -118,6 +121,8 @@ const enemies: CarEntity[] = [
 
 const gameState = new GameState(menuEl, messageEl, buttonEl, () => {
   // Garante sincronização antes de iniciar para evitar tela preta
+  camYaw = 0;
+  camPitch = 0;
   syncEntityMeshes([player, ...enemies]);
   updateCamera();
   sound.playBackground();
@@ -173,6 +178,11 @@ document.addEventListener('keydown', (e) => {
     gameState.start();
     return;
   }
+  if (!gameState.isPlaying() && ['1', '2', '3'].includes(k)) {
+    selectedColor = availableColors[Number(k) - 1];
+    setCarColor(player, selectedColor);
+    return;
+    }
   keys[k] = true;
   if (k === 'u') {
     player.car.addUpgrade({ id: 'armor', bonusHealth: 20 });
