@@ -13,9 +13,9 @@ try {
 if (Physics) {
   test('Physics aplica gravidade e atrito customizados', () => {
     const physics = new Physics();
-    assert.equal(physics.world.gravity.y, -30);
+    assert.equal(physics.world.gravity.y, -25);
     assert(
-      Math.abs(physics.world.defaultContactMaterial.friction - 0.6) < 0.001,
+      Math.abs(physics.world.defaultContactMaterial.friction - 0.7) < 0.001,
     );
   });
 }

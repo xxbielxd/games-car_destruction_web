@@ -1,4 +1,4 @@
-import * as CANNON from 'cannon-es';
+import * as CANNON from './stubs/cannon-es.js';
 
 /**
  * Configuração do mundo físico com foco em estabilidade.

@@ -95,3 +95,21 @@ Atualize sempre que implementar algo relevante.
 - Explosões agora recebem instância do THREE corretamente.
 - Vida base dos carros aumentada para 200 com teste dedicado.
 - Controles ajustados para reduzir viradas involuntárias.
+
+## 2025-09-03 - Menu inicial e dano direcional
+
+- Tela de menu para iniciar e exibir Game Over.
+- Controles simplificados para resposta mais direta.
+- IA dos bots avança com força maior na direção do jogador.
+- Dano varia conforme a direção do impacto (frente menos, lateral mais).
+- Testes cobrindo estado do jogo e cálculo de dano.
+- Música de fundo inicia apenas após interação do usuário para evitar erro NotAllowedError.
+- Correção: delta de tempo normalizado no menu para evitar tela preta ao iniciar.
+
+## 2025-09-04 - Sincronização inicial de mesh/câmera
+
+- Meshes alinhados aos corpos físicos antes de iniciar animação para evitar tela preta inicial.
+
+## 2025-09-05 - Correção de inicialização da câmera
+
+- camYaw e camPitch definidos antes do primeiro updateCamera para evitar ReferenceError.

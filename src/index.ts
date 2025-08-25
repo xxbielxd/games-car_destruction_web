@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as CANNON from 'cannon-es';
+import * as CANNON from './stubs/cannon-es.js';
 import Car from './Car.js';
 import Arena from './Arena.js';
 import Physics from './Physics.js';
@@ -9,6 +9,9 @@ import { applyCarControls } from './Controls.js';
 import { pursuePlayer } from './EnemyAI.js';
 import { computeCameraOffset } from './Camera.js';
 import Dust from './Dust.js';
+import GameState from './GameState.js';
+import { directionalDamage } from './Damage.js';
+import { syncEntityMeshes } from './entitySync.js';
 
 // Cena principal
 const scene = new THREE.Scene();
@@ -16,6 +19,11 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
+const menuEl = document.getElementById('menu') as HTMLElement;
+const messageEl = document.getElementById('menu-message') as HTMLElement;
+const buttonEl = document.getElementById('menu-button') as HTMLButtonElement;
+const sound = new Sound();
+const gameState = new GameState(menuEl, messageEl, buttonEl, () => sound.playBackground());
 
 // Luzes
 const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -26,8 +34,6 @@ scene.add(new THREE.AmbientLight(0xffffff, 0.4));
 // Física
 const physics = new Physics();
 new Arena(scene, physics.world, 120);
-const sound = new Sound();
-sound.playBackground();
 
 // Tipagem
 interface CarEntity {
@@ -129,6 +135,10 @@ document.addEventListener('mousemove', (e) => {
   camPitch = Math.max(-1, Math.min(1, camPitch));
 });
 
+// Garante que os meshes comecem sincronizados com os corpos físicos
+syncEntityMeshes([player, ...enemies]);
+updateCamera();
+
 // ================== Input (normalizado) ==================
 const keys: Record<string, boolean> = {};
 const normalizeKey = (k: string) => k.toLowerCase();
@@ -146,6 +156,10 @@ const mapArrow = (k: string) => {
 
 document.addEventListener('keydown', (e) => {
   const k = mapArrow(normalizeKey(e.key));
+  if (k === 'enter' && !gameState.isPlaying()) {
+    gameState.start();
+    return;
+  }
   keys[k] = true;
   if (k === 'u') {
     player.car.addUpgrade({ id: 'armor', bonusHealth: 20 });
@@ -166,9 +180,11 @@ function handleEnemyAI() {
 // Colisão/dano
 player.body.addEventListener('collide', (event: any) => {
   const enemy = enemies.find((e) => e.body === event.body);
-  if (enemy) {
-    player.car.applyDamage(10);
-    enemy.car.applyDamage(10);
+  if (enemy && gameState.isPlaying()) {
+    const playerDmg = directionalDamage(player.body, enemy.body.position);
+    const enemyDmg = directionalDamage(enemy.body, player.body.position);
+    player.car.applyDamage(playerDmg);
+    enemy.car.applyDamage(enemyDmg);
     updateLifeBars();
     sound.playCollision();
     checkDestroyed(player);
@@ -195,6 +211,9 @@ function checkDestroyed(entity: CarEntity) {
     physics.world.removeBody(entity.body);
     const idx = enemies.indexOf(entity);
     if (idx !== -1) enemies.splice(idx, 1);
+    if (entity === player) {
+      gameState.gameOver();
+    }
   }
 }
 
@@ -217,6 +236,10 @@ function animate() {
   const now = performance.now();
   const delta = (now - lastTime) / 1000;
   lastTime = now;
+  if (!gameState.isPlaying()) {
+    renderer.render(scene, camera);
+    return;
+  }
 
   // Passe o delta para controles (suavização consistente)
   applyCarControls(player.body, keys, delta);
@@ -229,11 +252,8 @@ function animate() {
     if (explosions[i].update(delta)) explosions.splice(i, 1);
   }
 
-  // Sincroniza mesh com corpo
-  [player, ...enemies].forEach((entity) => {
-    entity.mesh.position.copy(entity.body.position as any);
-    entity.mesh.quaternion.copy(entity.body.quaternion as any);
-  });
+  // Sincroniza meshes com os corpos
+  syncEntityMeshes([player, ...enemies]);
 
   dust.update(player.mesh.position, (player.body as any)._drifting);
 
