@@ -27,6 +27,8 @@ const messageEl = document.getElementById('menu-message') as HTMLElement;
 const buttonEl = document.getElementById('menu-button') as HTMLButtonElement;
 const sound = new Sound();
 let lastTime = performance.now();
+let camYaw = 0;
+let camPitch = 0;
 
 // Luzes
 const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -136,8 +138,6 @@ const dust = new Dust(THREE, scene);
 updateLifeBars();
 
 // Controle de câmera com botão direito
-let camYaw = 0;
-let camPitch = 0;
 let rotating = false;
 document.addEventListener('contextmenu', (e) => e.preventDefault());
 document.addEventListener('mousedown', (e) => {
