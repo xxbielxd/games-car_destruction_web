@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert';
-import { Body } from '../src/stubs/cannon-es.js';
+import { Body, World } from '../src/stubs/cannon-es.js';
 
 test('Body quaternion aceita setFromEuler', () => {
   const b = new Body();
@@ -17,4 +17,13 @@ test('Body quaternion aceita set', () => {
     { x: b.quaternion.x, y: b.quaternion.y, z: b.quaternion.z, w: b.quaternion.w },
     { x: 1, y: 2, z: 3, w: 4 },
   );
+});
+
+test('World gerencia array bodies', () => {
+  const world = new World();
+  const body = new Body();
+  world.addBody(body);
+  assert.ok(world.bodies.includes(body));
+  world.removeBody(body);
+  assert.ok(!world.bodies.includes(body));
 });
