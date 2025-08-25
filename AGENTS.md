@@ -150,3 +150,9 @@ Atualize sempre que implementar algo relevante.
 
 - Reset das teclas pressionadas e remoção de explosões pendentes ao reiniciar o jogo.
 - Função `clearKeys` adicionada para limpar mapa de entrada com teste dedicado.
+
+## 2025-09-12 - Prevenção de erros ao iniciar rapidamente
+
+- Mapa de teclas e flag de rotação declarados antes de `resetGame` para evitar ReferenceError.
+- Teste garantindo limpeza do mapa de teclas ao iniciar imediatamente.
+- Próximos passos: investigar suporte a múltiplos jogadores no sistema de entrada.
