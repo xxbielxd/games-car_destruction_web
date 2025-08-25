@@ -120,3 +120,10 @@ Atualize sempre que implementar algo relevante.
 - Delta de tempo reiniciado ao iniciar para evitar travamento inicial.
 - Teste cobrindo desbloqueio de achievements.
 - Próximos passos: implementar leaderboard global de pontuações.
+
+## 2025-09-07 - Clima dinâmico e correções de início
+
+- Sincronização de meshes e câmera ao iniciar para evitar tela preta.
+- Ciclo de clima dinâmico controlando luzes do cenário.
+- Testes garantem atualização do ciclo de clima.
+- Próximos passos: sistema de personalização de carros.
