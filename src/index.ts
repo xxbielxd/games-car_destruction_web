@@ -13,6 +13,7 @@ import GameState from './GameState.js';
 import { directionalDamage } from './Damage.js';
 import { syncEntityMeshes } from './entitySync.js';
 import Achievements from './Achievements.js';
+import Weather from './Weather.js';
 
 // Cena principal
 const scene = new THREE.Scene();
@@ -25,17 +26,14 @@ const messageEl = document.getElementById('menu-message') as HTMLElement;
 const buttonEl = document.getElementById('menu-button') as HTMLButtonElement;
 const sound = new Sound();
 let lastTime = performance.now();
-const gameState = new GameState(menuEl, messageEl, buttonEl, () => {
-  sound.playBackground();
-  lastTime = performance.now();
-});
-const achievements = new Achievements();
 
 // Luzes
 const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(10, 10, 10);
 scene.add(light);
-scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+scene.add(ambient);
+const weather = new Weather(light, ambient);
 
 // Física
 const physics = new Physics();
@@ -117,6 +115,15 @@ const enemies: CarEntity[] = [
   createCarEntity('enemy1', 0xff0000, new CANNON.Vec3(5, 0.5, 0)),
   createCarEntity('enemy2', 0x00ff00, new CANNON.Vec3(0, 0.5, 5)),
 ];
+
+const gameState = new GameState(menuEl, messageEl, buttonEl, () => {
+  // Garante sincronização antes de iniciar para evitar tela preta
+  syncEntityMeshes([player, ...enemies]);
+  updateCamera();
+  sound.playBackground();
+  lastTime = performance.now();
+});
+const achievements = new Achievements();
 
 const followOffset = new THREE.Vector3(0, 5, 10);
 const explosions: Explosion[] = [];
@@ -265,6 +272,7 @@ function animate() {
   syncEntityMeshes([player, ...enemies]);
 
   dust.update(player.mesh.position, (player.body as any)._drifting);
+  weather.update(delta);
 
   updateCamera();
   renderer.render(scene, camera);
