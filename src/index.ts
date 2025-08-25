@@ -35,7 +35,11 @@ const sound = new Sound();
 let lastTime = performance.now();
 let camYaw = 0;
 let camPitch = 0;
+// Mapa de teclas deve existir antes de qualquer reinicialização
+// para evitar ReferenceError caso o jogo seja iniciado rapidamente.
 const keys: Record<string, boolean> = {};
+// Flag de rotação da câmera definida antecipadamente pela mesma razão.
+let rotating = false;
 
 // Luzes
 const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -132,12 +136,6 @@ const enemies: CarEntity[] = [
   createCarEntity('enemy1', 0xff0000, enemyStarts[0]),
   createCarEntity('enemy2', 0x00ff00, enemyStarts[1]),
 ];
-
-// Mapa de teclas deve existir antes de qualquer reinicialização
-// para evitar ReferenceError caso o jogo seja iniciado rapidamente.
-const keys: Record<string, boolean> = {};
-// Flag de rotação da câmera definida antecipadamente pela mesma razão.
-let rotating = false;
 
 function resetGame() {
   resetCarEntity(player, playerStart);

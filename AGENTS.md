@@ -156,3 +156,7 @@ Atualize sempre que implementar algo relevante.
 - Mapa de teclas e flag de rotação declarados antes de `resetGame` para evitar ReferenceError.
 - Teste garantindo limpeza do mapa de teclas ao iniciar imediatamente.
 - Próximos passos: investigar suporte a múltiplos jogadores no sistema de entrada.
+
+## 2025-09-13 - Correção de duplicação de variáveis
+
+- Removidas declarações duplicadas de mapa de teclas e flag de rotação no `index.ts`.
