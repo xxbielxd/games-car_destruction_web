@@ -117,10 +117,6 @@ const explosions: Explosion[] = [];
 const dust = new Dust(THREE, scene);
 updateLifeBars();
 
-// Garante que os meshes comecem sincronizados com os corpos físicos
-syncEntityMeshes([player, ...enemies]);
-updateCamera();
-
 // Controle de câmera com botão direito
 let camYaw = 0;
 let camPitch = 0;
@@ -138,6 +134,10 @@ document.addEventListener('mousemove', (e) => {
   camPitch -= e.movementY * 0.003;
   camPitch = Math.max(-1, Math.min(1, camPitch));
 });
+
+// Garante que os meshes comecem sincronizados com os corpos físicos
+syncEntityMeshes([player, ...enemies]);
+updateCamera();
 
 // ================== Input (normalizado) ==================
 const keys: Record<string, boolean> = {};

@@ -109,3 +109,7 @@ Atualize sempre que implementar algo relevante.
 ## 2025-09-04 - Sincronização inicial de mesh/câmera
 
 - Meshes alinhados aos corpos físicos antes de iniciar animação para evitar tela preta inicial.
+
+## 2025-09-05 - Correção de inicialização da câmera
+
+- camYaw e camPitch definidos antes do primeiro updateCamera para evitar ReferenceError.
