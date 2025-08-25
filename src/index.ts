@@ -146,6 +146,7 @@ function resetGame() {
   rotating = false;
   explosions.forEach((ex) => scene.remove(ex.mesh));
   explosions.length = 0;
+  weather.reset();
   updateLifeBars();
   camYaw = 0;
   camPitch = 0;
