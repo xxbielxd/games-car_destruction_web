@@ -160,3 +160,10 @@ Atualize sempre que implementar algo relevante.
 ## 2025-09-13 - Correção de duplicação de variáveis
 
 - Removidas declarações duplicadas de mapa de teclas e flag de rotação no `index.ts`.
+
+## 2025-09-14 - Mapeamento de setas e derrapagem reduzida
+
+- Setas do teclado convertidas para WASD para garantir movimento do carro.
+- Velocidade lateral suavizada em `applyCarControls` para reduzir derrapagem.
+- Testes para mapeamento de setas e redução da derrapagem.
+- Próximos passos: investigar suporte a múltiplos jogadores no sistema de entrada.

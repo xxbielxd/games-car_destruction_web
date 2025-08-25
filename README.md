@@ -3,6 +3,7 @@
 Protótipo de jogo web em Three.js onde o objetivo é destruir os outros carros e ser o último sobrevivente. Este projeto está estruturado em TypeScript e preparado para evoluir para multiplayer online com Socket.IO.
 
 ## Visão Geral
+
 - Arena 3D simples com Two carros: jogador e bot.
 - Física de colisão utilizando Cannon-es.
 - Barra de vida acima de cada carro.
@@ -10,6 +11,7 @@ Protótipo de jogo web em Three.js onde o objetivo é destruir os outros carros 
 - Estrutura modular para futura expansão e suporte a multiplayer.
 
 ## Tecnologias
+
 - [Three.js](https://threejs.org/)
 - [Cannon-es](https://github.com/pmndrs/cannon-es)
 - TypeScript
@@ -17,6 +19,7 @@ Protótipo de jogo web em Three.js onde o objetivo é destruir os outros carros 
 - Vite
 
 ## Como rodar localmente
+
 1. Instale as dependências:
    ```bash
    npm install
@@ -31,6 +34,7 @@ Protótipo de jogo web em Three.js onde o objetivo é destruir os outros carros 
    ```
 
 ## Rodar com Docker
+
 1. Construir a imagem:
    ```bash
    docker build -t car-destruction .
@@ -40,7 +44,16 @@ Protótipo de jogo web em Three.js onde o objetivo é destruir os outros carros 
    docker run -p 4173:4173 car-destruction
    ```
 
+## Controles
+
+- **W** ou **seta para cima**: acelerar
+- **S** ou **seta para baixo**: marcha à ré
+- **A** ou **seta para esquerda**: virar à esquerda
+- **D** ou **seta para direita**: virar à direita
+- **Espaço**: freio de mão
+
 ## Estrutura de Pastas
+
 ```
 ├─ src/          # código fonte
 ├─ public/       # assets estáticos
@@ -49,6 +62,7 @@ Protótipo de jogo web em Three.js onde o objetivo é destruir os outros carros 
 ```
 
 ## Roadmap
+
 - [x] Sistema de upgrades/modificações.
 - [x] Múltiplos bots com IA melhorada.
 - [x] Explosões visuais ao destruir carros.
@@ -67,4 +81,5 @@ Protótipo de jogo web em Three.js onde o objetivo é destruir os outros carros 
 - [ ] Modo espectador após destruição do jogador.
 
 ## Licença
+
 Projeto criado para fins educativos.

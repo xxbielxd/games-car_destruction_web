@@ -126,3 +126,15 @@ test('atribui flag de derrapagem no corpo', () => {
   applyCarControls(body, {});
   assert.equal(body._drifting, false);
 });
+
+test('reduz velocidade lateral para evitar derrapagem', () => {
+  const body: any = {
+    applyForce: () => {},
+    position: new StubVec3(),
+    angularVelocity: new StubVec3(),
+    velocity: new StubVec3(5, 0, 0),
+    quaternion: new IdentityQuat(),
+  };
+  applyCarControls(body, {});
+  assert(body.velocity.x < 5);
+});

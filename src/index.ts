@@ -16,6 +16,7 @@ import Achievements from './Achievements.js';
 import Weather from './Weather.js';
 import { setCarColor } from './Customization.js';
 import { resetCarEntity, clearKeys } from './Reset.js';
+import { normalizeKey, mapArrow } from './Input.js';
 
 // Cena principal
 const scene = new THREE.Scene();
@@ -197,18 +198,6 @@ syncEntityMeshes([player, ...enemies]);
 updateCamera();
 
 // ================== Input (normalizado) ==================
-const normalizeKey = (k: string) => k.toLowerCase();
-const mapArrow = (k: string) => {
-  switch (k) {
-    case 'arrowup':
-    case 'arrowdown':
-    case 'arrowleft':
-    case 'arrowright':
-      return k;
-    default:
-      return k;
-  }
-};
 
 document.addEventListener('keydown', (e) => {
   const k = mapArrow(normalizeKey(e.key));
