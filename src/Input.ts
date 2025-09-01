@@ -7,12 +7,16 @@ export const normalizeKey = (k: string | undefined) => {
 export const mapArrow = (k: string) => {
   switch (k) {
     case 'arrowup':
+    case 'up':
       return 'w';
     case 'arrowdown':
+    case 'down':
       return 's';
     case 'arrowleft':
+    case 'left':
       return 'a';
     case 'arrowright':
+    case 'right':
       return 'd';
     default:
       return k;

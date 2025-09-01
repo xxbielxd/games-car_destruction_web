@@ -7,6 +7,10 @@ test('mapArrow converte setas para WASD', () => {
   assert.equal(mapArrow(normalizeKey('ArrowDown')), 's');
   assert.equal(mapArrow(normalizeKey('ArrowLeft')), 'a');
   assert.equal(mapArrow(normalizeKey('ArrowRight')), 'd');
+  assert.equal(mapArrow(normalizeKey('Up')), 'w');
+  assert.equal(mapArrow(normalizeKey('Down')), 's');
+  assert.equal(mapArrow(normalizeKey('Left')), 'a');
+  assert.equal(mapArrow(normalizeKey('Right')), 'd');
 });
 
 test('createKeyTracker registra teclas e mapeia setas', () => {
