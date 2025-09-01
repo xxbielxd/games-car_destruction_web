@@ -186,3 +186,8 @@ Atualize sempre que implementar algo relevante.
 - `normalizeKey` interpreta códigos como `KeyW` e `Space`, garantindo movimento mesmo sem `key`.
 - `Sound` agora possui `setVolume` para ajustar volume globalmente.
 - Testes atualizados para cobrir novos comportamentos de entrada e volume.
+
+## 2025-09-18 - Robusteza de setas no controle
+
+- `mapArrow` agora também reconhece `'Up'`, `'Down'`, `'Left'` e `'Right'`, garantindo movimento do carro em navegadores que retornam nomes abreviados.
+- Teste expandido para cobrir os novos mapeamentos.
